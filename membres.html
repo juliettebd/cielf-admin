@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIELF Admin — Membres</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --teal:#13686b; --wine:#861b3f; --purple:#ccadb5; --cream:#fafaf2; --cyan:#82adad; --dark:#2c2c2c; --mid:#666; --sidebar-w:240px; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; }
+    .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; background:var(--teal); display:flex; flex-direction:column; z-index:100; overflow-y:auto; }
+    .sidebar-logo { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo img { height:40px; }
+    .sidebar-badge { display:block; margin-top:8px; font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.7); }
+    .sidebar-user { padding:16px 24px; border-bottom:1px solid rgba(255,255,255,0.15); }
+    .sidebar-user-nom { font-size:13px; font-weight:700; color:#fff; }
+    .sidebar-user-role { font-size:11px; color:rgba(255,255,255,0.6); margin-top:2px; }
+    .sidebar-nav { flex:1; padding:16px 0; }
+    .nav-section { padding:8px 24px 4px; font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.45); }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 24px; font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-decoration:none; transition:background 0.15s; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
+    .nav-item:hover { background:rgba(255,255,255,0.1); color:#fff; }
+    .nav-item.active { background:rgba(255,255,255,0.18); color:#fff; font-weight:800; }
+    .nav-icon { font-size:16px; width:20px; text-align:center; }
+    .nav-badge { margin-left:auto; background:var(--wine); color:#fff; font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; }
+    .nav-item-disabled { opacity:0.4; cursor:not-allowed; pointer-events:none; }
+    .nav-soon { margin-left:auto; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); }
+    .sidebar-bottom { padding:16px 24px; border-top:1px solid rgba(255,255,255,0.15); }
+    .btn-deconnexion { width:100%; padding:10px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.2); border-radius:8px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; }
+    .btn-deconnexion:hover { background:rgba(255,255,255,0.2); color:#fff; }
+    .main { margin-left:var(--sidebar-w); min-height:100vh; padding:32px; }
+    .main-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
+    .main-header h1 { font-size:22px; font-weight:800; color:var(--teal); }
+
+    /* Barre recherche */
+    .search-bar { width:100%; max-width:360px; padding:10px 14px; border:1.5px solid #ddd; border-radius:8px; font-family:'Nunito',sans-serif; font-size:14px; color:var(--dark); outline:none; }
+    .search-bar:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(19,104,107,0.12); }
+
+    /* Table membres */
+    .membres-table { width:100%; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); overflow:hidden; border-collapse:collapse; }
+    .membres-table th { background:var(--teal); color:#fff; padding:12px 16px; font-size:12px; font-weight:800; text-align:left; }
+    .membres-table td { padding:12px 16px; font-size:13px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+    .membres-table tr:last-child td { border-bottom:none; }
+    .membres-table tr:hover td { background:#fafff9; }
+    .membre-nom { font-weight:800; color:var(--dark); }
+    .membre-email { font-size:12px; color:var(--mid); }
+    .badge-type { display:inline-block; font-size:10px; font-weight:800; padding:3px 9px; border-radius:8px; text-transform:uppercase; }
+    .type-leadership { background:#fce4ec; color:var(--wine); }
+    .type-dynamique  { background:#e3f2fd; color:#1565c0; }
+    .badge-fondateur { display:inline-block; font-size:9px; font-weight:800; padding:2px 7px; border-radius:6px; background:#fff8e1; color:#c47a1e; margin-left:4px; }
+    .select-membership { padding:6px 10px; border:1.5px solid #ddd; border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; }
+    .select-membership:focus { outline:none; border-color:var(--teal); }
+    .btn-toggle-actif { padding:5px 12px; border-radius:6px; font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid; }
+    .btn-actif   { background:#f0faf0; color:#2e7d32; border-color:#2e7d32; }
+    .btn-inactif { background:#fce4ec; color:var(--wine); border-color:var(--wine); }
+
+    .empty-state { text-align:center; padding:60px 20px; color:var(--mid); }
+    .empty-icon { font-size:48px; margin-bottom:12px; }
+    .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--teal); color:#fff; border:none; border-radius:8px; width:40px; height:40px; font-size:20px; cursor:pointer; align-items:center; justify-content:center; }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:99; }
+    @media (max-width:768px) {
+      .menu-toggle { display:flex; }
+      .sidebar { transform:translateX(-100%); transition:transform 0.25s; }
+      .sidebar.open { transform:translateX(0); }
+      .sidebar-overlay.open { display:block; }
+      .main { margin-left:0; padding:72px 16px 24px; }
+      .membres-table th:nth-child(3), .membres-table td:nth-child(3),
+      .membres-table th:nth-child(4), .membres-table td:nth-child(4) { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <button class="menu-toggle" id="menu-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://d1yei2z3i6k35z.cloudfront.net/15057727/69137015368ee_CIELFlogocrop.png" alt="CIELF">
+      <span class="sidebar-badge">Administration</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-nom" id="sidebar-nom">Chargement...</div>
+      <div class="sidebar-user-role" id="sidebar-role"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <a class="nav-item" href="dashboard.html"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section">Gestion</div>
+      <a class="nav-item" href="evenements.html"><span class="nav-icon">📅</span> Événements</a>
+      <a class="nav-item" href="candidatures.html"><span class="nav-icon">📋</span> Candidatures</a>
+      <a class="nav-item active" href="membres.html"><span class="nav-icon">👥</span> Membres</a>
+      <div class="nav-section">Admin</div>
+      <a class="nav-item nav-item-disabled" href="#"><span class="nav-icon">⚙️</span> Paramètres <span class="nav-soon">Admin</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="btn-deconnexion" id="btn-deconnexion">← Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h1>👥 Membres <span id="count-membres" style="font-size:16px;color:var(--mid);font-weight:600;"></span></h1>
+      <input type="text" class="search-bar" id="search-membres" placeholder="🔍 Rechercher par nom, email, pays...">
+    </div>
+    <table class="membres-table" id="membres-table">
+      <thead>
+        <tr>
+          <th>Membre</th>
+          <th>Membership</th>
+          <th>Pays</th>
+          <th>Depuis</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody id="membres-tbody">
+        <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--mid);">Chargement...</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script type="module">
+    import { requireAdmin, deconnexion, db } from "./cielf-admin-auth.js";
+    import { collection, getDocs, doc, updateDoc, query, orderBy }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const sidebar        = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+    document.getElementById("menu-toggle").addEventListener("click", () => { sidebar.classList.toggle("open"); sidebarOverlay.classList.toggle("open"); });
+    sidebarOverlay.addEventListener("click", () => { sidebar.classList.remove("open"); sidebarOverlay.classList.remove("open"); });
+    document.getElementById("btn-deconnexion").addEventListener("click", deconnexion);
+
+    let tousMembres = [];
+
+    async function charger() {
+      const tbody = document.getElementById("membres-tbody");
+      try {
+        const snap = await getDocs(query(collection(db, "members"), orderBy("nom", "asc")));
+        tousMembres = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById("count-membres").textContent = "(" + tousMembres.length + ")";
+        afficher(tousMembres);
+      } catch (err) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;padding:40px;color:var(--wine);'>Erreur : " + err.message + "</td></tr>";
+      }
+    }
+
+    function afficher(membres) {
+      const tbody = document.getElementById("membres-tbody");
+      if (membres.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;padding:40px;color:var(--mid);'>Aucun membre trouvé.</td></tr>";
+        return;
+      }
+      tbody.innerHTML = membres.map(m => {
+        const typeClass = m.membershipType === "leadership" ? "type-leadership" : "type-dynamique";
+        const typeLabel = m.membershipType === "leadership" ? "Leadership+" : "Dynamique";
+        const dateStr   = m.createdAt?.toDate ? m.createdAt.toDate().toLocaleDateString("fr-BE") : "—";
+        const actifClass  = m.status === "active" ? "btn-actif" : "btn-inactif";
+        const actifLabel  = m.status === "active" ? "Actif" : "Inactif";
+        return "<tr>" +
+          "<td>" +
+            "<div class='membre-nom'>" + (m.prenom || "") + " " + (m.nom || "") +
+              (m.isFondateur ? "<span class='badge-fondateur'>Fondateur</span>" : "") + "</div>" +
+            "<div class='membre-email'>" + (m.email || "") + "</div>" +
+          "</td>" +
+          "<td>" +
+            "<select class='select-membership' onchange='window._changerMembership(\"" + m.id + "\", this.value)'>" +
+              "<option value='leadership'" + (m.membershipType === "leadership" ? " selected" : "") + ">Leadership+</option>" +
+              "<option value='dynamique'"  + (m.membershipType === "dynamique"  ? " selected" : "") + ">Dynamique</option>" +
+            "</select>" +
+          "</td>" +
+          "<td>" + (m.pays || "—") + "</td>" +
+          "<td>" + dateStr + "</td>" +
+          "<td>" +
+            "<button class='btn-toggle-actif " + actifClass + "' onclick='window._toggleActif(\"" + m.id + "\",\"" + m.status + "\")'>" + actifLabel + "</button>" +
+          "</td>" +
+        "</tr>";
+      }).join("");
+    }
+
+    window._changerMembership = async (id, type) => {
+      try { await updateDoc(doc(db, "members", id), { membershipType: type }); }
+      catch (e) { alert("Erreur : " + e.message); }
+    };
+    window._toggleActif = async (id, statut) => {
+      const nouveau = statut === "active" ? "inactive" : "active";
+      try {
+        await updateDoc(doc(db, "members", id), { status: nouveau });
+        await charger();
+      } catch (e) { alert("Erreur : " + e.message); }
+    };
+
+    // Recherche live
+    document.getElementById("search-membres").addEventListener("input", function() {
+      const q = this.value.toLowerCase();
+      const filtres = q
+        ? tousMembres.filter(m =>
+            (m.prenom  + " " + m.nom).toLowerCase().includes(q) ||
+            (m.email   || "").toLowerCase().includes(q) ||
+            (m.pays    || "").toLowerCase().includes(q) ||
+            (m.secteur || "").toLowerCase().includes(q)
+          )
+        : tousMembres;
+      afficher(filtres);
+    });
+
+    requireAdmin(async (user, role) => {
+      document.getElementById("sidebar-nom").textContent  = sessionStorage.getItem("cielf_admin_nom") || user.email;
+      document.getElementById("sidebar-role").textContent = role === "admin" ? "Administratrice" : "Éditrice";
+      await charger();
+    });
+  </script>
+</body>
+</html>

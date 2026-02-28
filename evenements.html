@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIELF Admin — Événements</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:   #13686b;
+      --wine:   #861b3f;
+      --purple: #ccadb5;
+      --cream:  #fafaf2;
+      --cyan:   #82adad;
+      --dark:   #2c2c2c;
+      --mid:    #666;
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
+
+    /* ── SIDEBAR (identique dashboard) ── */
+    .sidebar {
+      position: fixed; top: 0; left: 0;
+      width: var(--sidebar-w); height: 100vh;
+      background: var(--teal);
+      display: flex; flex-direction: column;
+      z-index: 100; overflow-y: auto;
+    }
+    .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo img { height: 40px; }
+    .sidebar-badge { display: block; margin-top: 8px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+    .sidebar-user { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-user-nom { font-size: 13px; font-weight: 700; color: #fff; }
+    .sidebar-user-role { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .sidebar-nav { flex: 1; padding: 16px 0; }
+    .nav-section { padding: 8px 24px 4px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 24px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-decoration: none; transition: background 0.15s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+    .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .nav-item.active { background: rgba(255,255,255,0.18); color: #fff; font-weight: 800; }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--wine); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; }
+    .nav-item-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+    .nav-soon { margin-left: auto; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.5); }
+    .sidebar-bottom { padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.15); }
+    .btn-deconnexion { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .btn-deconnexion:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; padding: 32px; }
+    .main-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .main-header h1 { font-size: 22px; font-weight: 800; color: var(--teal); }
+    .btn-primary { padding: 11px 22px; background: var(--wine); color: #fff; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .btn-primary:hover { background: #6b1532; }
+    .btn-secondary { padding: 11px 22px; background: #fff; color: var(--teal); border: 1.5px solid var(--teal); border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { background: var(--teal); color: #fff; }
+
+    /* ── FILTRES ── */
+    .filtres { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .filtre-btn { padding: 7px 16px; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; border: 1.5px solid #ddd; background: #fff; color: var(--mid); transition: all 0.15s; }
+    .filtre-btn.active, .filtre-btn:hover { border-color: var(--teal); background: var(--teal); color: #fff; }
+
+    /* ── LISTE ÉVÉNEMENTS ── */
+    .events-list { display: flex; flex-direction: column; gap: 12px; }
+    .event-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      overflow: hidden;
+      transition: box-shadow 0.15s;
+    }
+    .event-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+    .event-img {
+      width: 80px;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--purple);
+    }
+    .event-img img { width: 80px; height: 100%; object-fit: cover; }
+    .event-body { padding: 14px 16px; }
+    .event-tags { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+    .tag { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tag-promo    { background: #e8f5e9; color: #2e7d32; }
+    .tag-membres  { background: #e3f2fd; color: #1565c0; }
+    .tag-externe  { background: #fce4ec; color: #880e4f; }
+    .tag-brouillon{ background: #f5f5f5; color: #666; }
+    .tag-publie   { background: #e8f5e9; color: #2e7d32; }
+    .event-titre { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .event-meta  { font-size: 12px; color: var(--mid); display: flex; gap: 12px; flex-wrap: wrap; }
+    .event-actions { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; justify-content: center; }
+    .btn-edit { padding: 6px 14px; background: var(--cream); color: var(--teal); border: 1.5px solid var(--teal); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .btn-edit:hover { background: var(--teal); color: #fff; }
+    .btn-delete { padding: 6px 14px; background: #fff; color: var(--wine); border: 1.5px solid var(--wine); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .btn-delete:hover { background: var(--wine); color: #fff; }
+    .btn-toggle-statut { padding: 6px 14px; background: #f0faf0; color: #2e7d32; border: 1.5px solid #2e7d32; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .btn-toggle-statut.depublier { background: #fff8e1; color: #c47a1e; border-color: #c47a1e; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--mid); }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state p { font-size: 15px; }
+
+    /* ── MODAL FORMULAIRE ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 500;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 640px;
+      padding: 36px 32px;
+      margin: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+    .modal-header h2 { font-size: 18px; font-weight: 800; color: var(--teal); }
+    .btn-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--mid); line-height: 1; padding: 0 4px; }
+    .btn-close:hover { color: var(--wine); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #ddd; border-radius: 8px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--dark);
+      background: #fff; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19,104,107,0.12); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-hint { font-size: 11px; color: var(--mid); margin-top: 4px; }
+    .upload-zone {
+      border: 2px dashed #ddd; border-radius: 8px; padding: 20px;
+      text-align: center; cursor: pointer; transition: border-color 0.2s;
+      position: relative;
+    }
+    .upload-zone:hover { border-color: var(--teal); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-zone-text { font-size: 13px; color: var(--mid); }
+    .upload-preview { max-width: 100%; max-height: 120px; border-radius: 6px; margin-top: 8px; display: none; }
+    .upload-progress { display: none; margin-top: 8px; }
+    .progress-bar { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--teal); width: 0%; transition: width 0.3s; }
+    .prix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .prix-grid .form-group { margin-bottom: 0; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; padding-top: 20px; border-top: 1px solid #eee; flex-wrap: wrap; }
+    .msg-form { display: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+    .msg-form.succes { display: block; background: #f0faf0; border: 1px solid var(--teal); color: var(--teal); }
+    .msg-form.erreur { display: block; background: #fdf0f3; border: 1px solid var(--wine); color: var(--wine); }
+
+    /* ── MOBILE ── */
+    .menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; background: var(--teal); color: #fff; border: none; border-radius: 8px; width: 40px; height: 40px; font-size: 20px; cursor: pointer; align-items: center; justify-content: center; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main { margin-left: 0; padding: 72px 16px 24px; }
+      .event-card { grid-template-columns: 1fr; }
+      .event-img { width: 100%; height: 120px; }
+      .event-actions { flex-direction: row; }
+      .form-row { grid-template-columns: 1fr; }
+      .prix-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="menu-toggle" id="menu-toggle">☰</button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://d1yei2z3i6k35z.cloudfront.net/15057727/69137015368ee_CIELFlogocrop.png" alt="CIELF">
+      <span class="sidebar-badge">Administration</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-nom" id="sidebar-nom">Chargement...</div>
+      <div class="sidebar-user-role" id="sidebar-role"></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <a class="nav-item" href="dashboard.html"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section">Gestion</div>
+      <a class="nav-item active" href="evenements.html"><span class="nav-icon">📅</span> Événements</a>
+      <a class="nav-item" href="candidatures.html"><span class="nav-icon">📋</span> Candidatures <span class="nav-badge" id="badge-cand">—</span></a>
+      <a class="nav-item" href="membres.html"><span class="nav-icon">👥</span> Membres</a>
+      <div class="nav-section">Admin</div>
+      <a class="nav-item nav-item-disabled" href="#"><span class="nav-icon">⚙️</span> Paramètres <span class="nav-soon">Admin</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="btn-deconnexion" id="btn-deconnexion">← Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h1>📅 Événements</h1>
+      <button class="btn-primary" id="btn-nouvel-event">+ Nouvel événement</button>
+    </div>
+
+    <div class="filtres">
+      <button class="filtre-btn active" data-filtre="tous">Tous</button>
+      <button class="filtre-btn" data-filtre="avenir">À venir</button>
+      <button class="filtre-btn" data-filtre="passes">Passés</button>
+      <button class="filtre-btn" data-filtre="brouillon">Brouillons</button>
+    </div>
+
+    <div class="events-list" id="events-list">
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        <p>Chargement des événements...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL FORMULAIRE ÉVÉNEMENT -->
+  <div class="modal-overlay" id="modal-event">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-titre">Nouvel événement</h2>
+        <button class="btn-close" id="btn-close-modal">✕</button>
+      </div>
+
+      <div class="msg-form" id="msg-form"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type d'événement *</label>
+          <select id="ev-type">
+            <option value="promo">🎁 Gratuit / Promo (ouvert à tous)</option>
+            <option value="membres">🔐 Réservé aux membres</option>
+            <option value="externe">🌍 Événement externe</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Statut</label>
+          <select id="ev-statut">
+            <option value="brouillon">Brouillon</option>
+            <option value="publie">Publié</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Titre de l'événement *</label>
+        <input type="text" id="ev-titre" placeholder="Ex : Intelligence culturelle et business francophone">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date *</label>
+          <input type="date" id="ev-date">
+        </div>
+        <div class="form-group">
+          <label>Heure *</label>
+          <input type="time" id="ev-heure" value="12:30">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Durée</label>
+          <input type="text" id="ev-duree" placeholder="Ex : 1h, 1h30">
+        </div>
+        <div class="form-group">
+          <label>Contact / Intervenante</label>
+          <select id="ev-contact">
+            <option value="juliette">Juliette</option>
+            <option value="genevieve">Geneviève</option>
+            <option value="les-deux">Juliette & Geneviève</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea id="ev-description" placeholder="Décris l'événement en 2-4 phrases..."></textarea>
+      </div>
+
+      <div class="form-group" id="groupe-lien-inscription">
+        <label>Lien d'inscription</label>
+        <input type="url" id="ev-lien" placeholder="https://...">
+        <div class="form-hint">Laisser vide si pas encore disponible</div>
+      </div>
+
+      <div class="form-group" id="groupe-lien-externe" style="display:none">
+        <label>Lien vers l'événement externe</label>
+        <input type="url" id="ev-lien-externe" placeholder="https://...">
+      </div>
+
+      <!-- Prix (visible seulement pour type "membres") -->
+      <div id="groupe-prix" style="display:none">
+        <div class="form-group">
+          <label>Tarifs membres</label>
+          <div class="prix-grid">
+            <div class="form-group">
+              <label>Leadership+ (€)</label>
+              <input type="number" id="ev-prix-leadership" placeholder="0 = gratuit" min="0">
+            </div>
+            <div class="form-group">
+              <label>Dynamique (€)</label>
+              <input type="number" id="ev-prix-dynamique" placeholder="0 = gratuit" min="0">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Image de l'événement</label>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="ev-image" accept="image/jpeg,image/png,image/webp">
+          <div class="upload-zone-text" id="upload-text">
+            📷 Clique pour choisir une image (JPG, PNG — max 5Mo)
+          </div>
+          <img class="upload-preview" id="upload-preview" alt="Aperçu">
+        </div>
+        <div class="upload-progress" id="upload-progress">
+          <div class="form-hint" id="upload-label">Upload en cours...</div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <input type="hidden" id="ev-image-url">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-annuler">Annuler</button>
+        <button class="btn-primary" id="btn-sauvegarder">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAdmin, deconnexion, db } from "./cielf-admin-auth.js";
+    import {
+      collection, getDocs, addDoc, doc, updateDoc, deleteDoc,
+      query, orderBy, Timestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+    // Storage (même app que auth)
+    const { app } = await import("./cielf-admin-auth.js");
+
+    // ── DOM refs ──────────────────────────────────────────
+    const sidebar        = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+    const menuToggle     = document.getElementById("menu-toggle");
+    const modalOverlay   = document.getElementById("modal-event");
+    const eventsList     = document.getElementById("events-list");
+    const msgForm        = document.getElementById("msg-form");
+
+    // Champs formulaire
+    const evType         = document.getElementById("ev-type");
+    const evStatut       = document.getElementById("ev-statut");
+    const evTitre        = document.getElementById("ev-titre");
+    const evDate         = document.getElementById("ev-date");
+    const evHeure        = document.getElementById("ev-heure");
+    const evDuree        = document.getElementById("ev-duree");
+    const evContact      = document.getElementById("ev-contact");
+    const evDescription  = document.getElementById("ev-description");
+    const evLien         = document.getElementById("ev-lien");
+    const evLienExterne  = document.getElementById("ev-lien-externe");
+    const evPrixL        = document.getElementById("ev-prix-leadership");
+    const evPrixD        = document.getElementById("ev-prix-dynamique");
+    const evImageInput   = document.getElementById("ev-image");
+    const evImageUrl     = document.getElementById("ev-image-url");
+    const uploadPreview  = document.getElementById("upload-preview");
+    const uploadText     = document.getElementById("upload-text");
+    const uploadProgress = document.getElementById("upload-progress");
+    const progressFill   = document.getElementById("progress-fill");
+    const uploadLabel    = document.getElementById("upload-label");
+
+    let filtreCourant = "tous";
+    let tousLesEvents = [];
+    let editId        = null; // null = création, sinon = id du doc à éditer
+
+    // ── Menu mobile ───────────────────────────────────────
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      sidebarOverlay.classList.toggle("open");
+    });
+    sidebarOverlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("open");
+    });
+    document.getElementById("btn-deconnexion").addEventListener("click", deconnexion);
+
+    // ── Affichage conditionnel champs selon type ──────────
+    evType.addEventListener("change", () => {
+      const t = evType.value;
+      document.getElementById("groupe-prix").style.display           = t === "membres" ? "block" : "none";
+      document.getElementById("groupe-lien-inscription").style.display = t === "externe" ? "none"  : "block";
+      document.getElementById("groupe-lien-externe").style.display    = t === "externe" ? "block" : "none";
+    });
+
+    // ── Upload image ──────────────────────────────────────
+    evImageInput.addEventListener("change", async () => {
+      const file = evImageInput.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        afficherMsg("L'image dépasse 5Mo. Choisis une image plus légère.", "erreur");
+        return;
+      }
+      // Aperçu local immédiat
+      const reader = new FileReader();
+      reader.onload = e => {
+        uploadPreview.src     = e.target.result;
+        uploadPreview.style.display = "block";
+        uploadText.style.display    = "none";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Upload réel vers Firebase Storage (appelé à la sauvegarde)
+    async function uploadImage(file, slug) {
+      const storage  = getStorage();
+      const imageRef = ref(storage, "events/" + slug + "/" + file.name);
+      return new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(imageRef, file);
+        uploadProgress.style.display = "block";
+        task.on("state_changed",
+          snap => {
+            const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+            progressFill.style.width = pct + "%";
+            uploadLabel.textContent  = "Upload en cours... " + pct + "%";
+          },
+          err => reject(err),
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            uploadProgress.style.display = "none";
+            resolve(url);
+          }
+        );
+      });
+    }
+
+    // ── Ouvrir modal nouveau / édition ────────────────────
+    function ouvrirModal(event = null) {
+      editId = event ? event.id : null;
+      document.getElementById("modal-titre").textContent = event ? "Modifier l'événement" : "Nouvel événement";
+      cacherMsg();
+      resetFormulaire();
+
+      if (event) {
+        evType.value        = event.type        || "promo";
+        evStatut.value      = event.statut      || "brouillon";
+        evTitre.value       = event.titre       || "";
+        evHeure.value       = event.heure       || "12:30";
+        evDuree.value       = event.duree       || "";
+        evContact.value     = event.contact     || "juliette";
+        evDescription.value = event.description || "";
+        evLien.value        = event.lienInscription || "";
+        evLienExterne.value = event.lienExterne  || "";
+        evPrixL.value       = event.prixLeadership ?? "";
+        evPrixD.value       = event.prixDynamique  ?? "";
+        evImageUrl.value    = event.imageUrl    || "";
+        if (event.imageUrl) {
+          uploadPreview.src          = event.imageUrl;
+          uploadPreview.style.display = "block";
+          uploadText.style.display   = "none";
+        }
+        // Date : convertir Timestamp Firebase en string YYYY-MM-DD
+        if (event.date && event.date.toDate) {
+          const d = event.date.toDate();
+          evDate.value = d.toISOString().split("T")[0];
+        }
+      }
+      evType.dispatchEvent(new Event("change")); // màj champs conditionnels
+      modalOverlay.classList.add("open");
+    }
+
+    function fermerModal() {
+      modalOverlay.classList.remove("open");
+      editId = null;
+    }
+
+    function resetFormulaire() {
+      evType.value = "promo"; evStatut.value = "brouillon";
+      evTitre.value = ""; evDate.value = ""; evHeure.value = "12:30";
+      evDuree.value = ""; evContact.value = "juliette";
+      evDescription.value = ""; evLien.value = ""; evLienExterne.value = "";
+      evPrixL.value = ""; evPrixD.value = "";
+      evImageUrl.value = "";
+      evImageInput.value = "";
+      uploadPreview.style.display = "none";
+      uploadText.style.display    = "block";
+      uploadProgress.style.display = "none";
+      progressFill.style.width    = "0%";
+    }
+
+    document.getElementById("btn-nouvel-event").addEventListener("click", () => ouvrirModal());
+    document.getElementById("btn-close-modal").addEventListener("click", fermerModal);
+    document.getElementById("btn-annuler").addEventListener("click", fermerModal);
+    modalOverlay.addEventListener("click", e => { if (e.target === modalOverlay) fermerModal(); });
+
+    // ── Sauvegarder événement ─────────────────────────────
+    document.getElementById("btn-sauvegarder").addEventListener("click", async () => {
+      cacherMsg();
+      // Validation basique
+      if (!evTitre.value.trim()) { afficherMsg("Le titre est obligatoire.", "erreur"); return; }
+      if (!evDate.value)          { afficherMsg("La date est obligatoire.", "erreur"); return; }
+      if (!evDescription.value.trim()) { afficherMsg("La description est obligatoire.", "erreur"); return; }
+
+      const btnSave = document.getElementById("btn-sauvegarder");
+      btnSave.disabled    = true;
+      btnSave.textContent = "Enregistrement...";
+
+      try {
+        // Construire le slug à partir du titre + date
+        const slug = evTitre.value.trim()
+          .toLowerCase()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .substring(0, 60)
+          + "-" + evDate.value;
+
+        // Upload image si nouveau fichier sélectionné
+        let imageUrl = evImageUrl.value;
+        if (evImageInput.files[0]) {
+          imageUrl = await uploadImage(evImageInput.files[0], slug);
+        }
+
+        // Construire la date Firestore (combinaison date + heure)
+        const [y, m, d] = evDate.value.split("-").map(Number);
+        const [hh, mm]  = (evHeure.value || "12:00").split(":").map(Number);
+        const dateObj   = new Date(y, m - 1, d, hh, mm);
+
+        const data = {
+          titre:          evTitre.value.trim(),
+          type:           evType.value,
+          statut:         evStatut.value,
+          date:           Timestamp.fromDate(dateObj),
+          heure:          evHeure.value,
+          duree:          evDuree.value.trim(),
+          contact:        evContact.value,
+          description:    evDescription.value.trim(),
+          lienInscription: evLien.value.trim(),
+          lienExterne:    evLienExterne.value.trim(),
+          prixLeadership: evPrixL.value !== "" ? Number(evPrixL.value) : null,
+          prixDynamique:  evPrixD.value !== "" ? Number(evPrixD.value) : null,
+          imageUrl:       imageUrl,
+          slug:           slug,
+          updatedAt:      Timestamp.now()
+        };
+
+        if (editId) {
+          await updateDoc(doc(db, "events", editId), data);
+          afficherMsg("Événement mis à jour ✓", "succes");
+        } else {
+          data.createdAt = Timestamp.now();
+          await addDoc(collection(db, "events"), data);
+          afficherMsg("Événement créé ✓", "succes");
+        }
+
+        await chargerEvenements();
+        setTimeout(fermerModal, 1200);
+
+      } catch (err) {
+        console.error(err);
+        afficherMsg("Erreur : " + err.message, "erreur");
+      } finally {
+        btnSave.disabled    = false;
+        btnSave.textContent = "Enregistrer";
+      }
+    });
+
+    // ── Charger et afficher les événements ────────────────
+    async function chargerEvenements() {
+      try {
+        const snap = await getDocs(query(collection(db, "events"), orderBy("date", "asc")));
+        tousLesEvents = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        afficherEvenements();
+      } catch (err) {
+        eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>⚠️</div><p>Erreur de chargement : " + err.message + "</p></div>";
+      }
+    }
+
+    function afficherEvenements() {
+      const now    = new Date();
+      let filtres  = tousLesEvents;
+
+      if (filtreCourant === "avenir")   filtres = tousLesEvents.filter(e => e.date?.toDate() >= now && e.statut === "publie");
+      if (filtreCourant === "passes")   filtres = tousLesEvents.filter(e => e.date?.toDate() < now);
+      if (filtreCourant === "brouillon") filtres = tousLesEvents.filter(e => e.statut === "brouillon");
+
+      if (filtres.length === 0) {
+        eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>📅</div><p>Aucun événement dans cette catégorie.</p></div>";
+        return;
+      }
+
+      eventsList.innerHTML = filtres.map(e => {
+        const dateStr = e.date?.toDate
+          ? e.date.toDate().toLocaleDateString("fr-BE", { weekday:"long", day:"numeric", month:"long", year:"numeric" })
+          : "Date non définie";
+        const tagType = { promo: "tag-promo", membres: "tag-membres", externe: "tag-externe" }[e.type] || "tag-promo";
+        const labelType = { promo: "Ouvert à tous", membres: "Membres", externe: "Externe" }[e.type] || e.type;
+        const tagStatut = e.statut === "publie" ? "tag-publie" : "tag-brouillon";
+        const labelStatut = e.statut === "publie" ? "Publié" : "Brouillon";
+        const imgContent = e.imageUrl
+          ? "<img src='" + e.imageUrl + "' alt=''>"
+          : "<span style='font-size:32px'>📅</span>";
+        const btnStatutLabel = e.statut === "publie" ? "Dépublier" : "Publier";
+        const btnStatutClass = e.statut === "publie" ? "btn-toggle-statut depublier" : "btn-toggle-statut";
+
+        return "<div class='event-card'>" +
+          "<div class='event-img'>" + imgContent + "</div>" +
+          "<div class='event-body'>" +
+            "<div class='event-tags'>" +
+              "<span class='tag " + tagType + "'>" + labelType + "</span>" +
+              "<span class='tag " + tagStatut + "'>" + labelStatut + "</span>" +
+            "</div>" +
+            "<div class='event-titre'>" + e.titre + "</div>" +
+            "<div class='event-meta'>" +
+              "<span>📅 " + dateStr + "</span>" +
+              (e.heure ? "<span>🕐 " + e.heure + (e.duree ? " (" + e.duree + ")" : "") + "</span>" : "") +
+              "<span>👤 " + (e.contact === "les-deux" ? "Juliette & Geneviève" : e.contact === "genevieve" ? "Geneviève" : "Juliette") + "</span>" +
+            "</div>" +
+          "</div>" +
+          "<div class='event-actions'>" +
+            "<button class='btn-edit' onclick='window._editEvent(\"" + e.id + "\")'>Modifier</button>" +
+            "<button class='" + btnStatutClass + "' onclick='window._toggleStatut(\"" + e.id + "\",\"" + e.statut + "\")'>" + btnStatutLabel + "</button>" +
+            "<button class='btn-delete' onclick='window._deleteEvent(\"" + e.id + "\")'>Supprimer</button>" +
+          "</div>" +
+        "</div>";
+      }).join("");
+    }
+
+    // Actions globales (appelées depuis le HTML inline)
+    window._editEvent = (id) => {
+      const ev = tousLesEvents.find(e => e.id === id);
+      if (ev) ouvrirModal(ev);
+    };
+    window._deleteEvent = async (id) => {
+      if (!confirm("Supprimer cet événement ? Cette action est irréversible.")) return;
+      await deleteDoc(doc(db, "events", id));
+      await chargerEvenements();
+    };
+    window._toggleStatut = async (id, statutActuel) => {
+      const nouveau = statutActuel === "publie" ? "brouillon" : "publie";
+      await updateDoc(doc(db, "events", id), { statut: nouveau });
+      await chargerEvenements();
+    };
+
+    // ── Filtres ───────────────────────────────────────────
+    document.querySelectorAll(".filtre-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filtre-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        filtreCourant = btn.dataset.filtre;
+        afficherEvenements();
+      });
+    });
+
+    // ── Messages ──────────────────────────────────────────
+    function afficherMsg(txt, type) { msgForm.textContent = txt; msgForm.className = "msg-form " + type; }
+    function cacherMsg() { msgForm.className = "msg-form"; }
+
+    // ── Vérification si on arrive avec ?action=nouveau ────
+    if (new URLSearchParams(window.location.search).get("action") === "nouveau") {
+      ouvrirModal();
+    }
+
+    // ── Init ──────────────────────────────────────────────
+    requireAdmin(async (user, role) => {
+      document.getElementById("sidebar-nom").textContent  = sessionStorage.getItem("cielf_admin_nom") || user.email;
+      document.getElementById("sidebar-role").textContent = role === "admin" ? "Administratrice" : "Éditrice";
+      await chargerEvenements();
+    });
+  </script>
+</body>
+</html>
