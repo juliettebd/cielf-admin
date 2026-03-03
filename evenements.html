@@ -19,7 +19,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
 
-    /* ── SIDEBAR (identique dashboard) ── */
+    /* ── SIDEBAR ── */
     .sidebar {
       position: fixed; top: 0; left: 0;
       width: var(--sidebar-w); height: 100vh;
@@ -63,33 +63,23 @@
     /* ── LISTE ÉVÉNEMENTS ── */
     .events-list { display: flex; flex-direction: column; gap: 12px; }
     .event-card {
-      background: #fff;
-      border-radius: 12px;
+      background: #fff; border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      display: grid;
-      grid-template-columns: 80px 1fr auto;
-      overflow: hidden;
-      transition: box-shadow 0.15s;
+      display: grid; grid-template-columns: 80px 1fr auto;
+      overflow: hidden; transition: box-shadow 0.15s;
     }
     .event-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
-    .event-img {
-      width: 80px;
-      background: var(--cream);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      color: var(--purple);
-    }
+    .event-img { width: 80px; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--purple); }
     .event-img img { width: 80px; height: 100%; object-fit: cover; }
     .event-body { padding: 14px 16px; }
     .event-tags { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
     .tag { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .tag-promo    { background: #e8f5e9; color: #2e7d32; }
-    .tag-membres  { background: #e3f2fd; color: #1565c0; }
-    .tag-externe  { background: #fce4ec; color: #880e4f; }
-    .tag-brouillon{ background: #f5f5f5; color: #666; }
-    .tag-publie   { background: #e8f5e9; color: #2e7d32; }
+    .tag-promo     { background: #e8f5e9; color: #2e7d32; }
+    .tag-membres   { background: #e3f2fd; color: #1565c0; }
+    .tag-externe   { background: #fce4ec; color: #880e4f; }
+    .tag-brouillon { background: #f5f5f5; color: #666; }
+    .tag-publie    { background: #e8f5e9; color: #2e7d32; }
+    .tag-format    { background: #f3e5f5; color: #6a1b9a; }
     .event-titre { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
     .event-meta  { font-size: 12px; color: var(--mid); display: flex; gap: 12px; flex-wrap: wrap; }
     .event-actions { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; justify-content: center; }
@@ -103,61 +93,35 @@
     .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
     .empty-state p { font-size: 15px; }
 
-    /* ── MODAL FORMULAIRE ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 500;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 24px;
-      overflow-y: auto;
-    }
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
     .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: #fff;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 640px;
-      padding: 36px 32px;
-      margin: auto;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    }
+    .modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 680px; padding: 36px 32px; margin: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
     .modal-header h2 { font-size: 18px; font-weight: 800; color: var(--teal); }
     .btn-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--mid); line-height: 1; padding: 0 4px; }
     .btn-close:hover { color: var(--wine); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%; padding: 11px 14px;
-      border: 1.5px solid #ddd; border-radius: 8px;
-      font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--dark);
-      background: #fff; outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19,104,107,0.12); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #ddd; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--dark); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19,104,107,0.12); }
     .form-group textarea { resize: vertical; min-height: 90px; }
     .form-hint { font-size: 11px; color: var(--mid); margin-top: 4px; }
-    .upload-zone {
-      border: 2px dashed #ddd; border-radius: 8px; padding: 20px;
-      text-align: center; cursor: pointer; transition: border-color 0.2s;
-      position: relative;
-    }
+    .form-section-title { font-size: 12px; font-weight: 800; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 8px 0 14px; padding-bottom: 6px; border-bottom: 1.5px solid #eee; }
+
+    /* Upload */
+    .upload-zone { border: 2px dashed #ddd; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
     .upload-zone:hover { border-color: var(--teal); }
-    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-    .upload-zone-text { font-size: 13px; color: var(--mid); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-zone-text { font-size: 13px; color: var(--mid); pointer-events: none; }
     .upload-preview { max-width: 100%; max-height: 120px; border-radius: 6px; margin-top: 8px; display: none; }
     .upload-progress { display: none; margin-top: 8px; }
     .progress-bar { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--teal); width: 0%; transition: width 0.3s; }
+
     .prix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .prix-grid .form-group { margin-bottom: 0; }
     .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; padding-top: 20px; border-top: 1px solid #eee; flex-wrap: wrap; }
     .msg-form { display: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
     .msg-form.succes { display: block; background: #f0faf0; border: 1px solid var(--teal); color: var(--teal); }
@@ -175,7 +139,7 @@
       .event-card { grid-template-columns: 1fr; }
       .event-img { width: 100%; height: 120px; }
       .event-actions { flex-direction: row; }
-      .form-row { grid-template-columns: 1fr; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
       .prix-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -223,10 +187,7 @@
     </div>
 
     <div class="events-list" id="events-list">
-      <div class="empty-state">
-        <div class="empty-icon">📅</div>
-        <p>Chargement des événements...</p>
-      </div>
+      <div class="empty-state"><div class="empty-icon">📅</div><p>Chargement des événements...</p></div>
     </div>
   </main>
 
@@ -240,20 +201,48 @@
 
       <div class="msg-form" id="msg-form"></div>
 
+      <!-- Section : Infos de base -->
+      <div class="form-section-title">Informations de base</div>
+
       <div class="form-row">
         <div class="form-group">
           <label>Type d'événement *</label>
           <select id="ev-type">
             <option value="promo">🎁 Gratuit / Promo (ouvert à tous)</option>
-            <option value="membres">🔐 Réservé aux membres</option>
+            <option value="online">💻 En ligne CIELF (membres)</option>
+            <option value="presentiel">🤝 Présentiel CIELF (membres)</option>
             <option value="externe">🌍 Événement externe</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Format</label>
+          <select id="ev-format">
+            <option value="">— Non spécifié —</option>
+            <option value="webinaire">💻 Webinaire</option>
+            <option value="masterclass">🎓 Masterclass</option>
+            <option value="atelier">🛠️ Atelier</option>
+            <option value="conference">🎤 Conférence</option>
+            <option value="networking">🤝 Networking</option>
+            <option value="voyage">✈️ Voyage groupe</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group">
           <label>Statut</label>
           <select id="ev-statut">
             <option value="brouillon">Brouillon</option>
             <option value="publie">Publié</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Intervenant(e)</label>
+          <select id="ev-contact">
+            <option value="juliette">Juliette</option>
+            <option value="genevieve">Geneviève</option>
+            <option value="les-deux">Juliette & Geneviève</option>
+            <option value="externe">Intervenant externe</option>
           </select>
         </div>
       </div>
@@ -263,36 +252,51 @@
         <input type="text" id="ev-titre" placeholder="Ex : Intelligence culturelle et business francophone">
       </div>
 
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea id="ev-description" placeholder="Décris l'événement en 2-4 phrases..."></textarea>
+      </div>
+
+      <!-- Section : Dates & Horaires -->
+      <div class="form-section-title">Dates &amp; Horaires</div>
+
       <div class="form-row">
         <div class="form-group">
-          <label>Date *</label>
+          <label>Date de début *</label>
           <input type="date" id="ev-date">
         </div>
         <div class="form-group">
-          <label>Heure *</label>
-          <input type="time" id="ev-heure" value="12:30">
+          <label>Date de fin <span style="font-weight:400;color:var(--mid)">(optionnel — événement multi-jours)</span></label>
+          <input type="date" id="ev-date-fin">
         </div>
       </div>
 
-      <div class="form-row">
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Heure de début</label>
+          <input type="time" id="ev-heure" value="20:00">
+        </div>
         <div class="form-group">
           <label>Durée</label>
           <input type="text" id="ev-duree" placeholder="Ex : 1h, 1h30">
         </div>
         <div class="form-group">
-          <label>Contact / Intervenante</label>
-          <select id="ev-contact">
-            <option value="juliette">Juliette</option>
-            <option value="genevieve">Geneviève</option>
-            <option value="les-deux">Juliette & Geneviève</option>
+          <label>Fuseau horaire</label>
+          <select id="ev-fuseau">
+            <option value="Europe/Paris">🇧🇪🇫🇷 Paris / Bruxelles (CET)</option>
+            <option value="America/Toronto">🇨🇦 Montréal / Toronto (EST)</option>
+            <option value="America/Vancouver">🇨🇦 Vancouver (PST)</option>
+            <option value="Africa/Abidjan">🌍 Abidjan / Dakar (GMT)</option>
+            <option value="Africa/Kinshasa">🌍 Kinshasa (WAT)</option>
+            <option value="Asia/Singapore">🇸🇬 Singapour (SGT)</option>
+            <option value="Asia/Ho_Chi_Minh">🇻🇳 Hô Chi Minh (ICT)</option>
           </select>
+          <div class="form-hint">Par défaut : Paris/Bruxelles. Changer uniquement pour les événements en présentiel hors Europe.</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Description *</label>
-        <textarea id="ev-description" placeholder="Décris l'événement en 2-4 phrases..."></textarea>
-      </div>
+      <!-- Section : Inscription & Tarifs -->
+      <div class="form-section-title">Inscription &amp; Tarifs</div>
 
       <div class="form-group" id="groupe-lien-inscription">
         <label>Lien d'inscription</label>
@@ -305,7 +309,6 @@
         <input type="url" id="ev-lien-externe" placeholder="https://...">
       </div>
 
-      <!-- Prix (visible seulement pour type "membres") -->
       <div id="groupe-prix" style="display:none">
         <div class="form-group">
           <label>Tarifs membres</label>
@@ -322,13 +325,13 @@
         </div>
       </div>
 
+      <!-- Section : Image -->
+      <div class="form-section-title">Image</div>
+
       <div class="form-group">
-        <label>Image de l'événement</label>
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="ev-image" accept="image/jpeg,image/png,image/webp">
-          <div class="upload-zone-text" id="upload-text">
-            📷 Clique pour choisir une image (JPG, PNG — max 5Mo)
-          </div>
+          <div class="upload-zone-text" id="upload-text">📷 Clique pour choisir une image (JPG, PNG — max 5Mo)</div>
           <img class="upload-preview" id="upload-preview" alt="Aperçu">
         </div>
         <div class="upload-progress" id="upload-progress">
@@ -353,10 +356,6 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-    // Storage (même app que auth)
-    const { app } = await import("./cielf-admin-auth.js");
 
     // ── DOM refs ──────────────────────────────────────────
     const sidebar        = document.getElementById("sidebar");
@@ -368,10 +367,13 @@
 
     // Champs formulaire
     const evType         = document.getElementById("ev-type");
+    const evFormat       = document.getElementById("ev-format");
     const evStatut       = document.getElementById("ev-statut");
     const evTitre        = document.getElementById("ev-titre");
     const evDate         = document.getElementById("ev-date");
+    const evDateFin      = document.getElementById("ev-date-fin");
     const evHeure        = document.getElementById("ev-heure");
+    const evFuseau       = document.getElementById("ev-fuseau");
     const evDuree        = document.getElementById("ev-duree");
     const evContact      = document.getElementById("ev-contact");
     const evDescription  = document.getElementById("ev-description");
@@ -389,7 +391,7 @@
 
     let filtreCourant = "tous";
     let tousLesEvents = [];
-    let editId        = null; // null = création, sinon = id du doc à éditer
+    let editId        = null;
 
     // ── Menu mobile ───────────────────────────────────────
     menuToggle.addEventListener("click", () => {
@@ -405,53 +407,65 @@
     // ── Affichage conditionnel champs selon type ──────────
     evType.addEventListener("change", () => {
       const t = evType.value;
-      document.getElementById("groupe-prix").style.display           = t === "membres" ? "block" : "none";
+      document.getElementById("groupe-prix").style.display            = (t === "online" || t === "presentiel") ? "block" : "none";
       document.getElementById("groupe-lien-inscription").style.display = t === "externe" ? "none"  : "block";
-      document.getElementById("groupe-lien-externe").style.display    = t === "externe" ? "block" : "none";
+      document.getElementById("groupe-lien-externe").style.display     = t === "externe" ? "block" : "none";
     });
 
-    // ── Upload image ──────────────────────────────────────
-    evImageInput.addEventListener("change", async () => {
+    // ── Aperçu image local ────────────────────────────────
+    evImageInput.addEventListener("change", () => {
       const file = evImageInput.files[0];
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) {
         afficherMsg("L'image dépasse 5Mo. Choisis une image plus légère.", "erreur");
+        evImageInput.value = "";
         return;
       }
-      // Aperçu local immédiat
       const reader = new FileReader();
       reader.onload = e => {
-        uploadPreview.src     = e.target.result;
+        uploadPreview.src          = e.target.result;
         uploadPreview.style.display = "block";
-        uploadText.style.display    = "none";
+        uploadText.style.display   = "none";
       };
       reader.readAsDataURL(file);
     });
 
-    // Upload réel vers Firebase Storage (appelé à la sauvegarde)
+    // ── Upload image vers Firebase Storage ───────────────
+    // FIX : on récupère le storage depuis cielf-admin-auth.js qui exporte l'app
     async function uploadImage(file, slug) {
-      const storage  = getStorage();
-      const imageRef = ref(storage, "events/" + slug + "/" + file.name);
+      // Import dynamique pour récupérer l'app Firebase déjà initialisée
+      const { app } = await import("./cielf-admin-auth.js");
+      const storage  = getStorage(app);
+      const imageRef = ref(storage, "events/" + slug + "/" + Date.now() + "_" + file.name);
+
       return new Promise((resolve, reject) => {
-        const task = uploadBytesResumable(imageRef, file);
         uploadProgress.style.display = "block";
+        progressFill.style.width     = "0%";
+        uploadLabel.textContent      = "Upload en cours... 0%";
+
+        const task = uploadBytesResumable(imageRef, file);
+
         task.on("state_changed",
           snap => {
             const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
             progressFill.style.width = pct + "%";
             uploadLabel.textContent  = "Upload en cours... " + pct + "%";
           },
-          err => reject(err),
+          err => {
+            uploadProgress.style.display = "none";
+            reject(err);
+          },
           async () => {
             const url = await getDownloadURL(task.snapshot.ref);
             uploadProgress.style.display = "none";
+            progressFill.style.width     = "0%";
             resolve(url);
           }
         );
       });
     }
 
-    // ── Ouvrir modal nouveau / édition ────────────────────
+    // ── Ouvrir modal ──────────────────────────────────────
     function ouvrirModal(event = null) {
       editId = event ? event.id : null;
       document.getElementById("modal-titre").textContent = event ? "Modifier l'événement" : "Nouvel événement";
@@ -460,9 +474,11 @@
 
       if (event) {
         evType.value        = event.type        || "promo";
+        evFormat.value      = event.format      || "";
         evStatut.value      = event.statut      || "brouillon";
         evTitre.value       = event.titre       || "";
-        evHeure.value       = event.heure       || "12:30";
+        evHeure.value       = event.heure       || "20:00";
+        evFuseau.value      = event.fuseau      || "Europe/Paris";
         evDuree.value       = event.duree       || "";
         evContact.value     = event.contact     || "juliette";
         evDescription.value = event.description || "";
@@ -471,18 +487,23 @@
         evPrixL.value       = event.prixLeadership ?? "";
         evPrixD.value       = event.prixDynamique  ?? "";
         evImageUrl.value    = event.imageUrl    || "";
+
         if (event.imageUrl) {
           uploadPreview.src          = event.imageUrl;
           uploadPreview.style.display = "block";
           uploadText.style.display   = "none";
         }
-        // Date : convertir Timestamp Firebase en string YYYY-MM-DD
+        // Date début : Timestamp → YYYY-MM-DD
         if (event.date && event.date.toDate) {
-          const d = event.date.toDate();
-          evDate.value = d.toISOString().split("T")[0];
+          evDate.value = event.date.toDate().toISOString().split("T")[0];
+        }
+        // Date fin : Timestamp → YYYY-MM-DD
+        if (event.dateFin && event.dateFin.toDate) {
+          evDateFin.value = event.dateFin.toDate().toISOString().split("T")[0];
         }
       }
-      evType.dispatchEvent(new Event("change")); // màj champs conditionnels
+
+      evType.dispatchEvent(new Event("change"));
       modalOverlay.classList.add("open");
     }
 
@@ -492,17 +513,17 @@
     }
 
     function resetFormulaire() {
-      evType.value = "promo"; evStatut.value = "brouillon";
-      evTitre.value = ""; evDate.value = ""; evHeure.value = "12:30";
+      evType.value = "promo"; evFormat.value = ""; evStatut.value = "brouillon";
+      evTitre.value = ""; evDate.value = ""; evDateFin.value = "";
+      evHeure.value = "20:00"; evFuseau.value = "Europe/Paris";
       evDuree.value = ""; evContact.value = "juliette";
       evDescription.value = ""; evLien.value = ""; evLienExterne.value = "";
       evPrixL.value = ""; evPrixD.value = "";
-      evImageUrl.value = "";
-      evImageInput.value = "";
-      uploadPreview.style.display = "none";
-      uploadText.style.display    = "block";
+      evImageUrl.value = ""; evImageInput.value = "";
+      uploadPreview.style.display  = "none";
+      uploadText.style.display     = "block";
       uploadProgress.style.display = "none";
-      progressFill.style.width    = "0%";
+      progressFill.style.width     = "0%";
     }
 
     document.getElementById("btn-nouvel-event").addEventListener("click", () => ouvrirModal());
@@ -510,20 +531,25 @@
     document.getElementById("btn-annuler").addEventListener("click", fermerModal);
     modalOverlay.addEventListener("click", e => { if (e.target === modalOverlay) fermerModal(); });
 
-    // ── Sauvegarder événement ─────────────────────────────
+    // ── Sauvegarder ───────────────────────────────────────
     document.getElementById("btn-sauvegarder").addEventListener("click", async () => {
       cacherMsg();
-      // Validation basique
-      if (!evTitre.value.trim()) { afficherMsg("Le titre est obligatoire.", "erreur"); return; }
-      if (!evDate.value)          { afficherMsg("La date est obligatoire.", "erreur"); return; }
+      if (!evTitre.value.trim())       { afficherMsg("Le titre est obligatoire.", "erreur"); return; }
+      if (!evDate.value)                { afficherMsg("La date de début est obligatoire.", "erreur"); return; }
       if (!evDescription.value.trim()) { afficherMsg("La description est obligatoire.", "erreur"); return; }
+
+      // Vérifier cohérence dates
+      if (evDateFin.value && evDateFin.value < evDate.value) {
+        afficherMsg("La date de fin doit être après la date de début.", "erreur");
+        return;
+      }
 
       const btnSave = document.getElementById("btn-sauvegarder");
       btnSave.disabled    = true;
       btnSave.textContent = "Enregistrement...";
 
       try {
-        // Construire le slug à partir du titre + date
+        // Slug : titre + date
         const slug = evTitre.value.trim()
           .toLowerCase()
           .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -532,33 +558,43 @@
           .substring(0, 60)
           + "-" + evDate.value;
 
-        // Upload image si nouveau fichier sélectionné
+        // Upload image si nouveau fichier
         let imageUrl = evImageUrl.value;
         if (evImageInput.files[0]) {
           imageUrl = await uploadImage(evImageInput.files[0], slug);
         }
 
-        // Construire la date Firestore (combinaison date + heure)
-        const [y, m, d] = evDate.value.split("-").map(Number);
-        const [hh, mm]  = (evHeure.value || "12:00").split(":").map(Number);
-        const dateObj   = new Date(y, m - 1, d, hh, mm);
+        // Construire Timestamp date début (avec heure)
+        const [y, m, d]   = evDate.value.split("-").map(Number);
+        const [hh, mm]    = (evHeure.value || "20:00").split(":").map(Number);
+        const dateObj     = new Date(y, m - 1, d, hh, mm);
+
+        // Construire Timestamp date fin si présente (fin de journée)
+        let dateFinTimestamp = null;
+        if (evDateFin.value) {
+          const [yf, mf, df] = evDateFin.value.split("-").map(Number);
+          dateFinTimestamp = Timestamp.fromDate(new Date(yf, mf - 1, df, 23, 59));
+        }
 
         const data = {
-          titre:          evTitre.value.trim(),
-          type:           evType.value,
-          statut:         evStatut.value,
-          date:           Timestamp.fromDate(dateObj),
-          heure:          evHeure.value,
-          duree:          evDuree.value.trim(),
-          contact:        evContact.value,
-          description:    evDescription.value.trim(),
+          titre:           evTitre.value.trim(),
+          type:            evType.value,
+          format:          evFormat.value || null,
+          statut:          evStatut.value,
+          date:            Timestamp.fromDate(dateObj),
+          dateFin:         dateFinTimestamp,
+          heure:           evHeure.value,
+          fuseau:          evFuseau.value || "Europe/Paris",
+          duree:           evDuree.value.trim(),
+          contact:         evContact.value,
+          description:     evDescription.value.trim(),
           lienInscription: evLien.value.trim(),
-          lienExterne:    evLienExterne.value.trim(),
-          prixLeadership: evPrixL.value !== "" ? Number(evPrixL.value) : null,
-          prixDynamique:  evPrixD.value !== "" ? Number(evPrixD.value) : null,
-          imageUrl:       imageUrl,
-          slug:           slug,
-          updatedAt:      Timestamp.now()
+          lienExterne:     evLienExterne.value.trim(),
+          prixLeadership:  evPrixL.value !== "" ? Number(evPrixL.value) : null,
+          prixDynamique:   evPrixD.value !== "" ? Number(evPrixD.value) : null,
+          imageUrl:        imageUrl,
+          slug:            slug,
+          updatedAt:       Timestamp.now()
         };
 
         if (editId) {
@@ -582,23 +618,49 @@
       }
     });
 
-    // ── Charger et afficher les événements ────────────────
+    // ── Charger événements ────────────────────────────────
     async function chargerEvenements() {
       try {
         const snap = await getDocs(query(collection(db, "events"), orderBy("date", "asc")));
         tousLesEvents = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         afficherEvenements();
       } catch (err) {
-        eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>⚠️</div><p>Erreur de chargement : " + err.message + "</p></div>";
+        eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>⚠️</div><p>Erreur : " + err.message + "</p></div>";
       }
     }
 
-    function afficherEvenements() {
-      const now    = new Date();
-      let filtres  = tousLesEvents;
+    // ── Libellés ──────────────────────────────────────────
+    const labelFuseau = {
+      "Europe/Paris":       "CET",
+      "America/Toronto":    "EST",
+      "America/Vancouver":  "PST",
+      "Africa/Abidjan":     "GMT",
+      "Africa/Kinshasa":    "WAT",
+      "Asia/Singapore":     "SGT",
+      "Asia/Ho_Chi_Minh":   "ICT"
+    };
+    const labelFormat = {
+      webinaire: "Webinaire", masterclass: "Masterclass", atelier: "Atelier",
+      conference: "Conférence", networking: "Networking", voyage: "Voyage groupe"
+    };
+    const labelContact = {
+      juliette: "Juliette", genevieve: "Geneviève",
+      "les-deux": "Juliette & Geneviève", externe: "Intervenant externe"
+    };
 
-      if (filtreCourant === "avenir")   filtres = tousLesEvents.filter(e => e.date?.toDate() >= now && e.statut === "publie");
-      if (filtreCourant === "passes")   filtres = tousLesEvents.filter(e => e.date?.toDate() < now);
+    // ── Afficher liste ────────────────────────────────────
+    function afficherEvenements() {
+      const now = new Date();
+      let filtres = tousLesEvents;
+
+      if (filtreCourant === "avenir")    filtres = tousLesEvents.filter(e => {
+        const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate();
+        return fin >= now && e.statut === "publie";
+      });
+      if (filtreCourant === "passes")    filtres = tousLesEvents.filter(e => {
+        const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate();
+        return fin < now;
+      });
       if (filtreCourant === "brouillon") filtres = tousLesEvents.filter(e => e.statut === "brouillon");
 
       if (filtres.length === 0) {
@@ -607,55 +669,65 @@
       }
 
       eventsList.innerHTML = filtres.map(e => {
-        const dateStr = e.date?.toDate
-          ? e.date.toDate().toLocaleDateString("fr-BE", { weekday:"long", day:"numeric", month:"long", year:"numeric" })
-          : "Date non définie";
-        const tagType = { promo: "tag-promo", membres: "tag-membres", externe: "tag-externe" }[e.type] || "tag-promo";
-        const labelType = { promo: "Ouvert à tous", membres: "Membres", externe: "Externe" }[e.type] || e.type;
-        const tagStatut = e.statut === "publie" ? "tag-publie" : "tag-brouillon";
-        const labelStatut = e.statut === "publie" ? "Publié" : "Brouillon";
-        const imgContent = e.imageUrl
-          ? "<img src='" + e.imageUrl + "' alt=''>"
-          : "<span style='font-size:32px'>📅</span>";
-        const btnStatutLabel = e.statut === "publie" ? "Dépublier" : "Publier";
-        const btnStatutClass = e.statut === "publie" ? "btn-toggle-statut depublier" : "btn-toggle-statut";
+        // Formatage date
+        const opts = { day:"numeric", month:"long", year:"numeric" };
+        let dateStr = "Date non définie";
+        if (e.date?.toDate) {
+          const d1 = e.date.toDate();
+          if (e.dateFin?.toDate) {
+            const d2 = e.dateFin.toDate();
+            dateStr = d1.toLocaleDateString("fr-BE", opts) + " → " + d2.toLocaleDateString("fr-BE", opts);
+          } else {
+            dateStr = d1.toLocaleDateString("fr-BE", { weekday:"long", ...opts });
+          }
+        }
+        const fuseauLabel = labelFuseau[e.fuseau] || "CET";
+        const heureStr    = e.heure ? e.heure + " (" + fuseauLabel + ")" + (e.duree ? " · " + e.duree : "") : "";
 
-        return "<div class='event-card'>" +
-          "<div class='event-img'>" + imgContent + "</div>" +
-          "<div class='event-body'>" +
-            "<div class='event-tags'>" +
-              "<span class='tag " + tagType + "'>" + labelType + "</span>" +
-              "<span class='tag " + tagStatut + "'>" + labelStatut + "</span>" +
-            "</div>" +
-            "<div class='event-titre'>" + e.titre + "</div>" +
-            "<div class='event-meta'>" +
-              "<span>📅 " + dateStr + "</span>" +
-              (e.heure ? "<span>🕐 " + e.heure + (e.duree ? " (" + e.duree + ")" : "") + "</span>" : "") +
-              "<span>👤 " + (e.contact === "les-deux" ? "Juliette & Geneviève" : e.contact === "genevieve" ? "Geneviève" : "Juliette") + "</span>" +
-            "</div>" +
-          "</div>" +
-          "<div class='event-actions'>" +
-            "<button class='btn-edit' onclick='window._editEvent(\"" + e.id + "\")'>Modifier</button>" +
-            "<button class='" + btnStatutClass + "' onclick='window._toggleStatut(\"" + e.id + "\",\"" + e.statut + "\")'>" + btnStatutLabel + "</button>" +
-            "<button class='btn-delete' onclick='window._deleteEvent(\"" + e.id + "\")'>Supprimer</button>" +
-          "</div>" +
-        "</div>";
+        const tagType    = { promo:"tag-promo", online:"tag-membres", presentiel:"tag-membres", externe:"tag-externe" }[e.type] || "tag-promo";
+        const labelType  = { promo:"Ouvert à tous", online:"En ligne", presentiel:"Présentiel", externe:"Externe" }[e.type] || e.type;
+        const tagStatut  = e.statut === "publie" ? "tag-publie" : "tag-brouillon";
+        const imgContent = e.imageUrl ? "<img src='" + e.imageUrl + "' alt=''>" : "<span style='font-size:32px'>📅</span>";
+        const btnStatut  = e.statut === "publie" ? "Dépublier" : "Publier";
+        const btnClass   = e.statut === "publie" ? "btn-toggle-statut depublier" : "btn-toggle-statut";
+
+        return "<div class='event-card'>"
+          + "<div class='event-img'>" + imgContent + "</div>"
+          + "<div class='event-body'>"
+          +   "<div class='event-tags'>"
+          +     "<span class='tag " + tagType + "'>" + labelType + "</span>"
+          +     "<span class='tag " + tagStatut + "'>" + (e.statut === "publie" ? "Publié" : "Brouillon") + "</span>"
+          +     (e.format ? "<span class='tag tag-format'>" + (labelFormat[e.format] || e.format) + "</span>" : "")
+          +   "</div>"
+          +   "<div class='event-titre'>" + e.titre + "</div>"
+          +   "<div class='event-meta'>"
+          +     "<span>📅 " + dateStr + "</span>"
+          +     (heureStr ? "<span>🕐 " + heureStr + "</span>" : "")
+          +     "<span>👤 " + (labelContact[e.contact] || e.contact || "Juliette") + "</span>"
+          +   "</div>"
+          + "</div>"
+          + "<div class='event-actions'>"
+          +   "<button class='btn-edit' onclick='window._editEvent(\"" + e.id + "\")'>Modifier</button>"
+          +   "<button class='" + btnClass + "' onclick='window._toggleStatut(\"" + e.id + "\",\"" + e.statut + "\")'>" + btnStatut + "</button>"
+          +   "<button class='btn-delete' onclick='window._deleteEvent(\"" + e.id + "\")'>Supprimer</button>"
+          + "</div>"
+          + "</div>";
       }).join("");
     }
 
-    // Actions globales (appelées depuis le HTML inline)
-    window._editEvent = (id) => {
+    // Actions globales
+    window._editEvent = id => {
       const ev = tousLesEvents.find(e => e.id === id);
       if (ev) ouvrirModal(ev);
     };
-    window._deleteEvent = async (id) => {
+    window._deleteEvent = async id => {
       if (!confirm("Supprimer cet événement ? Cette action est irréversible.")) return;
       await deleteDoc(doc(db, "events", id));
       await chargerEvenements();
     };
     window._toggleStatut = async (id, statutActuel) => {
       const nouveau = statutActuel === "publie" ? "brouillon" : "publie";
-      await updateDoc(doc(db, "events", id), { statut: nouveau });
+      await updateDoc(doc(db, "events", id), { statut: nouveau, updatedAt: Timestamp.now() });
       await chargerEvenements();
     };
 
@@ -669,14 +741,10 @@
       });
     });
 
-    // ── Messages ──────────────────────────────────────────
     function afficherMsg(txt, type) { msgForm.textContent = txt; msgForm.className = "msg-form " + type; }
     function cacherMsg() { msgForm.className = "msg-form"; }
 
-    // ── Vérification si on arrive avec ?action=nouveau ────
-    if (new URLSearchParams(window.location.search).get("action") === "nouveau") {
-      ouvrirModal();
-    }
+    if (new URLSearchParams(window.location.search).get("action") === "nouveau") ouvrirModal();
 
     // ── Init ──────────────────────────────────────────────
     requireAdmin(async (user, role) => {
