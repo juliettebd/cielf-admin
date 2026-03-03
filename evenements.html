@@ -120,6 +120,31 @@
     .upload-progress { display: none; margin-top: 8px; }
     .progress-bar { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--teal); width: 0%; transition: width 0.3s; }
+    .btn-retirer-image { display: none; margin-top: 8px; padding: 5px 12px; background: none; border: 1.5px solid var(--wine); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; color: var(--wine); cursor: pointer; }
+    .btn-retirer-image:hover { background: var(--wine); color: #fff; }
+
+    /* ── PREVIEW CARTE ── */
+    .preview-section { margin-top: 24px; padding-top: 20px; border-top: 1.5px dashed #ddd; }
+    .preview-section-titre { font-size: 12px; font-weight: 800; color: var(--mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    .preview-carte { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.10); max-width: 360px; position: relative; border: 1px solid #eee; }
+    .preview-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .preview-img-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg, #13686b 0%, #82adad 100%); }
+    .preview-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .preview-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pb-promo      { background: #fafaf2; color: #13686b; border: 1.5px solid #13686b; }
+    .pb-online     { background: #13686b; color: white; }
+    .pb-presentiel { background: #861b3f; color: white; }
+    .pb-externe    { background: #ccadb5; color: #4a2030; }
+    .pb-format     { background: rgba(255,255,255,0.92); color: #555; border: 1px solid #ddd; }
+    .preview-corps { padding: 16px 18px; }
+    .preview-date  { font-size: 12px; font-weight: 700; color: #861b3f; margin-bottom: 6px; }
+    .preview-titre { font-size: 15px; font-weight: 800; color: #1a1a1a; line-height: 1.35; margin-bottom: 8px; }
+    .preview-desc  { font-size: 13px; color: #555; line-height: 1.55; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .preview-prix  { font-size: 12px; font-weight: 700; color: #13686b; margin-bottom: 10px; }
+    .preview-btn   { display: block; text-align: center; padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 800; color: white; }
+    .pb-btn-principal { background: #861b3f; }
+    .pb-btn-membre    { background: #13686b; }
+    .pb-btn-gris      { background: #ddd; color: #888; }
 
     .prix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; padding-top: 20px; border-top: 1px solid #eee; flex-wrap: wrap; }
@@ -208,22 +233,22 @@
         <div class="form-group">
           <label>Type d'événement *</label>
           <select id="ev-type">
-            <option value="promo">Gratuit / Promo (ouvert à tous)</option>
-            <option value="online">En ligne CIELF (membres)</option>
-            <option value="presentiel">Présentiel CIELF (membres)</option>
-            <option value="externe">Événement externe</option>
+            <option value="promo">🎁 Gratuit / Promo (ouvert à tous)</option>
+            <option value="online">💻 En ligne CIELF (membres)</option>
+            <option value="presentiel">🤝 Présentiel CIELF (membres)</option>
+            <option value="externe">🌍 Événement externe</option>
           </select>
         </div>
         <div class="form-group">
           <label>Format</label>
           <select id="ev-format">
             <option value="">— Non spécifié —</option>
-            <option value="webinaire">Webinaire</option>
-            <option value="masterclass">Masterclass</option>
-            <option value="atelier">Atelier</option>
-            <option value="conference">Conférence</option>
-            <option value="networking">Networking</option>
-            <option value="voyage">Voyage groupe</option>
+            <option value="webinaire">💻 Webinaire</option>
+            <option value="masterclass">🎓 Masterclass</option>
+            <option value="atelier">🛠️ Atelier</option>
+            <option value="conference">🎤 Conférence</option>
+            <option value="networking">🤝 Networking</option>
+            <option value="voyage">✈️ Voyage groupe</option>
           </select>
         </div>
       </div>
@@ -283,13 +308,13 @@
         <div class="form-group">
           <label>Fuseau horaire</label>
           <select id="ev-fuseau">
-            <option value="Europe/Paris">Paris / Bruxelles (CET)</option>
-            <option value="America/Toronto">Montréal / Toronto (EST)</option>
-            <option value="America/Vancouver">Vancouver (PST)</option>
-            <option value="Africa/Abidjan">Abidjan / Dakar (GMT)</option>
-            <option value="Africa/Kinshasa">Kinshasa (WAT)</option>
-            <option value="Asia/Singapore">Singapour (SGT)</option>
-            <option value="Asia/Ho_Chi_Minh">Hô Chi Minh (ICT)</option>
+            <option value="Europe/Paris">🇧🇪🇫🇷 Paris / Bruxelles (CET)</option>
+            <option value="America/Toronto">🇨🇦 Montréal / Toronto (EST)</option>
+            <option value="America/Vancouver">🇨🇦 Vancouver (PST)</option>
+            <option value="Africa/Abidjan">🌍 Abidjan / Dakar (GMT)</option>
+            <option value="Africa/Kinshasa">🌍 Kinshasa (WAT)</option>
+            <option value="Asia/Singapore">🇸🇬 Singapour (SGT)</option>
+            <option value="Asia/Ho_Chi_Minh">🇻🇳 Hô Chi Minh (ICT)</option>
           </select>
           <div class="form-hint">Par défaut : Paris/Bruxelles. Changer uniquement pour les événements en présentiel hors Europe.</div>
         </div>
@@ -331,14 +356,31 @@
       <div class="form-group">
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="ev-image" accept="image/jpeg,image/png,image/webp">
-          <div class="upload-zone-text" id="upload-text">📷 Clique pour choisir une image (JPG, PNG — max 5Mo)</div>
+          <div class="upload-zone-text" id="upload-text">Clique pour choisir une image (JPG, PNG — max 5Mo)</div>
           <img class="upload-preview" id="upload-preview" alt="Aperçu">
         </div>
+        <button type="button" class="btn-retirer-image" id="btn-retirer-image">✕ Retirer l'image</button>
         <div class="upload-progress" id="upload-progress">
           <div class="form-hint" id="upload-label">Upload en cours...</div>
           <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
         <input type="hidden" id="ev-image-url">
+      </div>
+
+      <!-- Preview carte -->
+      <div class="preview-section">
+        <div class="preview-section-titre">Aperçu de la carte</div>
+        <div class="preview-carte" id="preview-carte">
+          <div class="preview-img-placeholder" id="preview-img-wrap"></div>
+          <div class="preview-badges" id="preview-badges"></div>
+          <div class="preview-corps">
+            <div class="preview-date" id="preview-date"></div>
+            <div class="preview-titre" id="preview-titre">Titre de l'événement</div>
+            <div class="preview-desc" id="preview-desc">Description de l'événement...</div>
+            <div class="preview-prix" id="preview-prix"></div>
+            <div class="preview-btn pb-btn-principal" id="preview-btn">Bouton d'inscription</div>
+          </div>
+        </div>
       </div>
 
       <div class="modal-footer">
@@ -424,14 +466,122 @@
       }
       const reader = new FileReader();
       reader.onload = e => {
-        uploadPreview.src          = e.target.result;
+        uploadPreview.src           = e.target.result;
         uploadPreview.style.display = "block";
-        uploadText.style.display   = "none";
+        uploadText.style.display    = "none";
+        document.getElementById("btn-retirer-image").style.display = "inline-block";
+        majPreview();
       };
       reader.readAsDataURL(file);
     });
 
-    // ── Upload image vers Firebase Storage ───────────────
+    // ── Retirer image ─────────────────────────────────────
+    document.getElementById("btn-retirer-image").addEventListener("click", () => {
+      evImageInput.value              = "";
+      evImageUrl.value                = "";
+      uploadPreview.src               = "";
+      uploadPreview.style.display     = "none";
+      uploadText.style.display        = "block";
+      document.getElementById("btn-retirer-image").style.display = "none";
+      majPreview();
+    });
+
+    // ── Preview carte temps réel ──────────────────────────
+    const labelFuseauPreview = {
+      "Europe/Paris": "Paris/Bruxelles", "America/Toronto": "Montréal",
+      "America/Vancouver": "Vancouver",  "Africa/Abidjan": "Abidjan/Dakar",
+      "Africa/Kinshasa": "Kinshasa",     "Asia/Singapore": "Singapour",
+      "Asia/Ho_Chi_Minh": "Hô Chi Minh"
+    };
+    const labelTypePreview   = { promo: "Gratuit", online: "En ligne CIELF", presentiel: "Présentiel", externe: "Externe" };
+    const classBadgePreview  = { promo: "pb-promo", online: "pb-online", presentiel: "pb-presentiel", externe: "pb-externe" };
+    const labelFormatPreview = { webinaire: "Webinaire", masterclass: "Masterclass", atelier: "Atelier", conference: "Conférence", networking: "Networking", voyage: "Voyage groupe" };
+
+    function majPreview() {
+      const type    = evType.value;
+      const format  = evFormat.value;
+      const titre   = evTitre.value.trim()       || "Titre de l'événement";
+      const desc    = evDescription.value.trim() || "Description de l'événement...";
+      const dateVal = evDate.value;
+      const dateFinVal = evDateFin.value;
+      const heure   = evHeure.value;
+      const fuseau  = evFuseau.value;
+      const duree   = evDuree.value.trim();
+      const imgSrc  = uploadPreview.style.display !== "none" ? uploadPreview.src
+                    : evImageUrl.value || "";
+
+      // Image
+      const imgWrap = document.getElementById("preview-img-wrap");
+      if (imgSrc) {
+        imgWrap.outerHTML = '<img class="preview-img" id="preview-img-wrap" src="' + imgSrc + '" alt="">';
+      } else {
+        const el = document.getElementById("preview-img-wrap");
+        if (el.tagName === "IMG") {
+          el.outerHTML = '<div class="preview-img-placeholder" id="preview-img-wrap"></div>';
+        }
+      }
+
+      // Badges
+      const badgeFormat = format && labelFormatPreview[format]
+        ? '<span class="preview-badge pb-format">' + labelFormatPreview[format] + '</span>' : "";
+      document.getElementById("preview-badges").innerHTML =
+        '<span class="preview-badge ' + (classBadgePreview[type] || "pb-promo") + '">' + (labelTypePreview[type] || type) + '</span>'
+        + badgeFormat;
+
+      // Date
+      let dateStr = "";
+      if (dateVal) {
+        const [y, m, d] = dateVal.split("-").map(Number);
+        const d1 = new Date(y, m - 1, d);
+        const opts = { day: "numeric", month: "long", year: "numeric" };
+        if (dateFinVal) {
+          const [yf, mf, df] = dateFinVal.split("-").map(Number);
+          const d2 = new Date(yf, mf - 1, df);
+          dateStr = d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()
+            ? d1.getDate() + " au " + d2.toLocaleDateString("fr-BE", opts)
+            : d1.toLocaleDateString("fr-BE", opts) + " au " + d2.toLocaleDateString("fr-BE", opts);
+        } else {
+          dateStr = d1.toLocaleDateString("fr-BE", { weekday: "long", ...opts });
+          if (heure) {
+            dateStr += " · " + heure + " (" + (labelFuseauPreview[fuseau] || "Paris/Bruxelles") + ")";
+            if (duree) dateStr += " · " + duree;
+          }
+        }
+      }
+      document.getElementById("preview-date").textContent  = dateStr ? "📅 " + dateStr : "";
+      document.getElementById("preview-titre").textContent = titre;
+      document.getElementById("preview-desc").textContent  = desc;
+
+      // Prix
+      let prixStr = "";
+      if (type === "promo")      prixStr = "Gratuit — ouvert à tous";
+      else if (type === "online") prixStr = "Leadership+ : inclus · Dynamique : 1 gratuit/mois";
+      else if (type === "presentiel") {
+        const lp = evPrixL.value !== "" ? evPrixL.value + " € (Leadership+)" : "";
+        const ld = evPrixD.value !== "" ? evPrixD.value + " € (Dynamique)"   : "";
+        prixStr = [lp, ld].filter(Boolean).join(" · ");
+      }
+      document.getElementById("preview-prix").textContent = prixStr;
+
+      // Bouton
+      const btnEl = document.getElementById("preview-btn");
+      btnEl.className = "preview-btn";
+      if (type === "online" || type === "presentiel") {
+        btnEl.textContent = "Réservé aux membres — S'inscrire";
+        btnEl.classList.add("pb-btn-membre");
+      } else if (type === "externe") {
+        btnEl.textContent = "Plus d'informations";
+        btnEl.style.background = "#ccadb5";
+        btnEl.style.color = "#4a2030";
+      } else {
+        btnEl.textContent = "Je m'inscris gratuitement";
+        btnEl.classList.add("pb-btn-principal");
+      }
+    }
+
+    // Écouter tous les champs qui affectent la preview
+    [evType, evFormat, evStatut, evContact, evFuseau].forEach(el => el.addEventListener("change", majPreview));
+    [evTitre, evDescription, evDate, evDateFin, evHeure, evDuree, evPrixL, evPrixD].forEach(el => el.addEventListener("input", majPreview));
     // getApp() récupère l'instance Firebase déjà initialisée par cielf-admin-auth.js
     // sans risque de double initializeApp()
     async function uploadImage(file, slug) {
@@ -489,9 +639,10 @@
         evImageUrl.value    = event.imageUrl    || "";
 
         if (event.imageUrl) {
-          uploadPreview.src          = event.imageUrl;
+          uploadPreview.src           = event.imageUrl;
           uploadPreview.style.display = "block";
-          uploadText.style.display   = "none";
+          uploadText.style.display    = "none";
+          document.getElementById("btn-retirer-image").style.display = "inline-block";
         }
         // Date début : Timestamp → YYYY-MM-DD
         if (event.date && event.date.toDate) {
@@ -504,6 +655,7 @@
       }
 
       evType.dispatchEvent(new Event("change"));
+      majPreview();
       modalOverlay.classList.add("open");
     }
 
@@ -522,6 +674,7 @@
       evImageUrl.value = ""; evImageInput.value = "";
       uploadPreview.style.display  = "none";
       uploadText.style.display     = "block";
+      document.getElementById("btn-retirer-image").style.display = "none";
       uploadProgress.style.display = "none";
       progressFill.style.width     = "0%";
     }
