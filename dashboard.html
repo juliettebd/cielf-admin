@@ -100,7 +100,7 @@
       <div class="stat-card purple">
         <div class="stat-label">Membres fondateurs</div>
         <div class="stat-value" id="stat-fondateurs">—</div>
-        <div class="stat-sub">sur 50 places</div>
+        <div class="stat-sub">sur 30 places</div>
       </div>
     </div>
 
@@ -124,7 +124,7 @@
   <script type="module">
     import { requireAdmin, db }               from "./cielf-admin-auth.js";
     import { chargerSidebar, majSidebarUser } from "./cielf-sidebar.js";
-    import { collection, query, where, getDocs, Timestamp }
+    import { collection, query, where, getDocs }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     await chargerSidebar();
@@ -135,18 +135,24 @@
       document.getElementById("welcome-msg").textContent = "Bonjour, " + nom.split(" ")[0] + " !";
 
       try {
-        const membresSnap = await getDocs(query(collection(db, "members"), where("status", "==", "active"), where("deleted", "!=", true)));
-        document.getElementById("stat-membres").textContent = membresSnap.size;
+        // Membres : query simple sur status, filtre deleted côté client
+        const membresSnap = await getDocs(query(collection(db, "members"), where("status", "==", "active")));
+        const membresActifs = membresSnap.docs.filter(d => !d.data().deleted);
+        document.getElementById("stat-membres").textContent    = membresActifs.length;
+        document.getElementById("stat-fondateurs").textContent = membresActifs.filter(d => d.data().isFondateur).length;
 
-        const fondSnap = await getDocs(query(collection(db, "members"), where("isFondateur", "==", true), where("deleted", "!=", true)));
-        document.getElementById("stat-fondateurs").textContent = fondSnap.size;
-
+        // Candidatures : collection entière, pas de filtre complexe
         const candSnap = await getDocs(collection(db, "pending_members"));
         document.getElementById("stat-candidatures").textContent = candSnap.size;
 
-        const now    = Timestamp.now();
-        const evSnap = await getDocs(query(collection(db, "events"), where("statut", "==", "publie"), where("date", ">", now)));
-        document.getElementById("stat-evenements").textContent = evSnap.size;
+        // Événements à venir : query simple sur statut, filtre date côté client
+        const now     = new Date();
+        const evSnap  = await getDocs(query(collection(db, "events"), where("statut", "==", "publie")));
+        const evAvenir = evSnap.docs.filter(d => {
+          const date = d.data().date?.toDate ? d.data().date.toDate() : null;
+          return date && date >= now;
+        });
+        document.getElementById("stat-evenements").textContent = evAvenir.length;
 
       } catch (e) {
         console.error("Erreur chargement stats:", e);
