@@ -6,166 +6,138 @@
   <title>CIELF Admin — Événements</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --teal:   #13686b;
-      --wine:   #861b3f;
-      --purple: #ccadb5;
-      --cream:  #fafaf2;
-      --cyan:   #82adad;
-      --dark:   #2c2c2c;
-      --mid:    #666;
-      --sidebar-w: 240px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--dark); min-height: 100vh; }
+    :root { --teal:#13686b; --wine:#861b3f; --purple:#ccadb5; --cream:#fafaf2; --cyan:#82adad; --dark:#2c2c2c; --mid:#666; --sidebar-w:240px; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; }
 
-    /* ── SIDEBAR ── */
-    .sidebar {
-      position: fixed; top: 0; left: 0;
-      width: var(--sidebar-w); height: 100vh;
-      background: var(--teal);
-      display: flex; flex-direction: column;
-      z-index: 100; overflow-y: auto;
-    }
-    .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-    .sidebar-logo img { height: 40px; }
-    .sidebar-badge { display: block; margin-top: 8px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
-    .sidebar-user { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.15); }
-    .sidebar-user-nom { font-size: 13px; font-weight: 700; color: #fff; }
-    .sidebar-user-role { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-    .sidebar-nav { flex: 1; padding: 16px 0; }
-    .nav-section { padding: 8px 24px 4px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 24px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-decoration: none; transition: background 0.15s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
-    .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    .nav-item.active { background: rgba(255,255,255,0.18); color: #fff; font-weight: 800; }
-    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
-    .nav-badge { margin-left: auto; background: var(--wine); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; }
-    .nav-item-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
-    .nav-soon { margin-left: auto; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.5); }
-    .sidebar-bottom { padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.15); }
-    .btn-deconnexion { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-    .btn-deconnexion:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    /* ── SIDEBAR (styles partagés) ── */
+    .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; background:var(--teal); display:flex; flex-direction:column; z-index:100; overflow-y:auto; }
+    .sidebar-logo { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo img { height:40px; }
+    .sidebar-badge { display:block; margin-top:8px; font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.7); }
+    .sidebar-user { padding:16px 24px; border-bottom:1px solid rgba(255,255,255,0.15); }
+    .sidebar-user-nom { font-size:13px; font-weight:700; color:#fff; }
+    .sidebar-user-role { font-size:11px; color:rgba(255,255,255,0.6); margin-top:2px; }
+    .sidebar-nav { flex:1; padding:16px 0; }
+    .nav-section { padding:8px 24px 4px; font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.45); }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 24px; font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-decoration:none; transition:background 0.15s; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
+    .nav-item:hover { background:rgba(255,255,255,0.1); color:#fff; }
+    .nav-item.active { background:rgba(255,255,255,0.18); color:#fff; font-weight:800; }
+    .nav-icon { font-size:16px; width:20px; text-align:center; }
+    .nav-item-disabled { opacity:0.4; cursor:not-allowed; pointer-events:none; }
+    .nav-soon { margin-left:auto; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); }
+    .sidebar-bottom { padding:16px 24px; border-top:1px solid rgba(255,255,255,0.15); }
+    .btn-deconnexion { width:100%; padding:10px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.2); border-radius:8px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; }
+    .btn-deconnexion:hover { background:rgba(255,255,255,0.2); color:#fff; }
 
-    /* ── MAIN ── */
-    .main { margin-left: var(--sidebar-w); min-height: 100vh; padding: 32px; }
-    .main-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
-    .main-header h1 { font-size: 22px; font-weight: 800; color: var(--teal); }
-    .btn-primary { padding: 11px 22px; background: var(--wine); color: #fff; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
-    .btn-primary:hover { background: #6b1532; }
-    .btn-secondary { padding: 11px 22px; background: #fff; color: var(--teal); border: 1.5px solid var(--teal); border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:hover { background: var(--teal); color: #fff; }
+    /* ── LAYOUT ── */
+    .main { margin-left:var(--sidebar-w); min-height:100vh; padding:32px; }
+    .main-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
+    .main-header h1 { font-size:22px; font-weight:800; color:var(--teal); }
+    .btn-primary { padding:11px 22px; background:var(--wine); color:#fff; border:none; border-radius:8px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
+    .btn-primary:hover { background:#6b1532; }
+    .btn-secondary { padding:11px 22px; background:#fff; color:var(--teal); border:1.5px solid var(--teal); border-radius:8px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+    .btn-secondary:hover { background:var(--teal); color:#fff; }
 
     /* ── FILTRES ── */
-    .filtres { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .filtre-btn { padding: 7px 16px; border-radius: 20px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; border: 1.5px solid #ddd; background: #fff; color: var(--mid); transition: all 0.15s; }
-    .filtre-btn.active, .filtre-btn:hover { border-color: var(--teal); background: var(--teal); color: #fff; }
+    .filtres { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+    .filtre-btn { padding:7px 16px; border-radius:20px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; border:1.5px solid #ddd; background:#fff; color:var(--mid); transition:all 0.15s; }
+    .filtre-btn.active, .filtre-btn:hover { border-color:var(--teal); background:var(--teal); color:#fff; }
 
-    /* ── LISTE ÉVÉNEMENTS ── */
-    .events-list { display: flex; flex-direction: column; gap: 12px; }
-    .event-card {
-      background: #fff; border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      display: grid; grid-template-columns: 80px 1fr auto;
-      overflow: hidden; transition: box-shadow 0.15s;
-    }
-    .event-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
-    .event-img { width: 80px; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--purple); }
-    .event-img img { width: 80px; height: 100%; object-fit: cover; }
-    .event-body { padding: 14px 16px; }
-    .event-tags { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
-    .tag { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .tag-promo     { background: #e8f5e9; color: #2e7d32; }
-    .tag-membres   { background: #e3f2fd; color: #1565c0; }
-    .tag-externe   { background: #fce4ec; color: #880e4f; }
-    .tag-brouillon { background: #f5f5f5; color: #666; }
-    .tag-publie    { background: #e8f5e9; color: #2e7d32; }
-    .tag-format    { background: #f3e5f5; color: #6a1b9a; }
-    .event-titre { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-    .event-meta  { font-size: 12px; color: var(--mid); display: flex; gap: 12px; flex-wrap: wrap; }
-    .event-actions { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; justify-content: center; }
-    .btn-edit { padding: 6px 14px; background: var(--cream); color: var(--teal); border: 1.5px solid var(--teal); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .btn-edit:hover { background: var(--teal); color: #fff; }
-    .btn-delete { padding: 6px 14px; background: #fff; color: var(--wine); border: 1.5px solid var(--wine); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .btn-delete:hover { background: var(--wine); color: #fff; }
-    .btn-toggle-statut { padding: 6px 14px; background: #f0faf0; color: #2e7d32; border: 1.5px solid #2e7d32; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .btn-toggle-statut.depublier { background: #fff8e1; color: #c47a1e; border-color: #c47a1e; }
-    .empty-state { text-align: center; padding: 60px 20px; color: var(--mid); }
-    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .empty-state p { font-size: 15px; }
+    /* ── LISTE ── */
+    .events-list { display:flex; flex-direction:column; gap:12px; }
+    .event-card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); display:grid; grid-template-columns:80px 1fr auto; overflow:hidden; transition:box-shadow 0.15s; }
+    .event-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+    .event-img { width:80px; background:var(--cream); display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--purple); }
+    .event-img img { width:80px; height:100%; object-fit:cover; }
+    .event-body { padding:14px 16px; }
+    .event-tags { display:flex; gap:6px; margin-bottom:6px; flex-wrap:wrap; }
+    .tag { font-size:10px; font-weight:800; padding:2px 8px; border-radius:8px; text-transform:uppercase; letter-spacing:0.5px; }
+    .tag-promo     { background:#e8f5e9; color:#2e7d32; }
+    .tag-membres   { background:#e3f2fd; color:#1565c0; }
+    .tag-externe   { background:#fce4ec; color:#880e4f; }
+    .tag-brouillon { background:#f5f5f5; color:#666; }
+    .tag-publie    { background:#e8f5e9; color:#2e7d32; }
+    .tag-format    { background:#f3e5f5; color:#6a1b9a; }
+    .event-titre { font-size:15px; font-weight:800; color:var(--dark); margin-bottom:4px; }
+    .event-meta { font-size:12px; color:var(--mid); display:flex; gap:12px; flex-wrap:wrap; }
+    .event-actions { padding:14px 16px; display:flex; flex-direction:column; gap:6px; align-items:flex-end; justify-content:center; }
+    .btn-edit { padding:6px 14px; background:var(--cream); color:var(--teal); border:1.5px solid var(--teal); border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .btn-edit:hover { background:var(--teal); color:#fff; }
+    .btn-delete { padding:6px 14px; background:#fff; color:var(--wine); border:1.5px solid var(--wine); border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .btn-delete:hover { background:var(--wine); color:#fff; }
+    .btn-toggle-statut { padding:6px 14px; background:#f0faf0; color:#2e7d32; border:1.5px solid #2e7d32; border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .btn-toggle-statut.depublier { background:#fff8e1; color:#c47a1e; border-color:#c47a1e; }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--mid); }
+    .empty-state .empty-icon { font-size:48px; margin-bottom:12px; }
 
     /* ── MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 680px; padding: 36px 32px; margin: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
-    .modal-header h2 { font-size: 18px; font-weight: 800; color: var(--teal); }
-    .btn-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--mid); line-height: 1; padding: 0 4px; }
-    .btn-close:hover { color: var(--wine); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #ddd; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--dark); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19,104,107,0.12); }
-    .form-group textarea { resize: vertical; min-height: 90px; }
-    .form-hint { font-size: 11px; color: var(--mid); margin-top: 4px; }
-    .form-section-title { font-size: 12px; font-weight: 800; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin: 8px 0 14px; padding-bottom: 6px; border-bottom: 1.5px solid #eee; }
-
-    /* Upload */
-    .upload-zone { border: 2px dashed #ddd; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; position: relative; }
-    .upload-zone:hover { border-color: var(--teal); }
-    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .upload-zone-text { font-size: 13px; color: var(--mid); pointer-events: none; }
-    .upload-preview { max-width: 100%; max-height: 120px; border-radius: 6px; margin-top: 8px; display: none; }
-    .upload-progress { display: none; margin-top: 8px; }
-    .progress-bar { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
-    .progress-fill { height: 100%; background: var(--teal); width: 0%; transition: width 0.3s; }
-    .btn-retirer-image { display: none; margin-top: 8px; padding: 5px 12px; background: none; border: 1.5px solid var(--wine); border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; color: var(--wine); cursor: pointer; }
-    .btn-retirer-image:hover { background: var(--wine); color: #fff; }
-
-    /* ── PREVIEW CARTE ── */
-    .preview-section { margin-top: 24px; padding-top: 20px; border-top: 1.5px dashed #ddd; }
-    .preview-section-titre { font-size: 12px; font-weight: 800; color: var(--mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .preview-carte { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.10); max-width: 360px; position: relative; border: 1px solid #eee; }
-    .preview-img { width: 100%; height: 160px; object-fit: cover; display: block; }
-    .preview-img-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg, #13686b 0%, #82adad 100%); }
-    .preview-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
-    .preview-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .pb-promo      { background: #fafaf2; color: #13686b; border: 1.5px solid #13686b; }
-    .pb-online     { background: #13686b; color: white; }
-    .pb-presentiel { background: #861b3f; color: white; }
-    .pb-externe    { background: #ccadb5; color: #4a2030; }
-    .pb-format     { background: rgba(255,255,255,0.92); color: #555; border: 1px solid #ddd; }
-    .preview-corps { padding: 16px 18px; }
-    .preview-date  { font-size: 12px; font-weight: 700; color: #861b3f; margin-bottom: 6px; }
-    .preview-titre { font-size: 15px; font-weight: 800; color: #1a1a1a; line-height: 1.35; margin-bottom: 8px; }
-    .preview-desc  { font-size: 13px; color: #555; line-height: 1.55; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .preview-prix  { font-size: 12px; font-weight: 700; color: #13686b; margin-bottom: 10px; }
-    .preview-btn   { display: block; text-align: center; padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 800; color: white; }
-    .pb-btn-principal { background: #861b3f; }
-    .pb-btn-membre    { background: #13686b; }
-    .pb-btn-gris      { background: #ddd; color: #888; }
-
-    .prix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; padding-top: 20px; border-top: 1px solid #eee; flex-wrap: wrap; }
-    .msg-form { display: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
-    .msg-form.succes { display: block; background: #f0faf0; border: 1px solid var(--teal); color: var(--teal); }
-    .msg-form.erreur { display: block; background: #fdf0f3; border: 1px solid var(--wine); color: var(--wine); }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:500; align-items:flex-start; justify-content:center; padding:24px; overflow-y:auto; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:#fff; border-radius:16px; width:100%; max-width:680px; padding:36px 32px; margin:auto; box-shadow:0 8px 40px rgba(0,0,0,0.18); }
+    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+    .modal-header h2 { font-size:18px; font-weight:800; color:var(--teal); }
+    .btn-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--mid); line-height:1; padding:0 4px; }
+    .btn-close:hover { color:var(--wine); }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; font-size:13px; font-weight:700; color:var(--dark); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:11px 14px; border:1.5px solid #ddd; border-radius:8px; font-family:'Nunito',sans-serif; font-size:14px; color:var(--dark); background:#fff; outline:none; transition:border-color 0.2s, box-shadow 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(19,104,107,0.12); }
+    .form-group textarea { resize:vertical; min-height:90px; }
+    .form-hint { font-size:11px; color:var(--mid); margin-top:4px; }
+    .form-section-title { font-size:12px; font-weight:800; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin:8px 0 14px; padding-bottom:6px; border-bottom:1.5px solid #eee; }
+    .upload-zone { border:2px dashed #ddd; border-radius:8px; padding:20px; text-align:center; cursor:pointer; transition:border-color 0.2s; position:relative; }
+    .upload-zone:hover { border-color:var(--teal); }
+    .upload-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .upload-zone-text { font-size:13px; color:var(--mid); pointer-events:none; }
+    .upload-preview { max-width:100%; max-height:120px; border-radius:6px; margin-top:8px; display:none; }
+    .upload-progress { display:none; margin-top:8px; }
+    .progress-bar { height:4px; background:#eee; border-radius:2px; overflow:hidden; }
+    .progress-fill { height:100%; background:var(--teal); width:0%; transition:width 0.3s; }
+    .btn-retirer-image { display:none; margin-top:8px; padding:5px 12px; background:none; border:1.5px solid var(--wine); border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; color:var(--wine); cursor:pointer; }
+    .btn-retirer-image:hover { background:var(--wine); color:#fff; }
+    .preview-section { margin-top:24px; padding-top:20px; border-top:1.5px dashed #ddd; }
+    .preview-section-titre { font-size:12px; font-weight:800; color:var(--mid); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; }
+    .preview-carte { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,0.10); max-width:360px; position:relative; border:1px solid #eee; }
+    .preview-img { width:100%; height:160px; object-fit:cover; display:block; }
+    .preview-img-placeholder { width:100%; height:160px; background:linear-gradient(135deg, #13686b 0%, #82adad 100%); }
+    .preview-badges { position:absolute; top:10px; left:10px; display:flex; gap:5px; flex-wrap:wrap; }
+    .preview-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:16px; text-transform:uppercase; letter-spacing:0.5px; }
+    .pb-promo      { background:#fafaf2; color:#13686b; border:1.5px solid #13686b; }
+    .pb-online     { background:#13686b; color:white; }
+    .pb-presentiel { background:#861b3f; color:white; }
+    .pb-externe    { background:#ccadb5; color:#4a2030; }
+    .pb-format     { background:rgba(255,255,255,0.92); color:#555; border:1px solid #ddd; }
+    .preview-corps { padding:16px 18px; }
+    .preview-date  { font-size:12px; font-weight:700; color:#861b3f; margin-bottom:6px; }
+    .preview-titre { font-size:15px; font-weight:800; color:#1a1a1a; line-height:1.35; margin-bottom:8px; }
+    .preview-desc  { font-size:13px; color:#555; line-height:1.55; margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .preview-prix  { font-size:12px; font-weight:700; color:#13686b; margin-bottom:10px; }
+    .preview-btn   { display:block; text-align:center; padding:9px 16px; border-radius:6px; font-size:13px; font-weight:800; color:white; }
+    .pb-btn-principal { background:#861b3f; }
+    .pb-btn-membre    { background:#13686b; }
+    .prix-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; padding-top:20px; border-top:1px solid #eee; flex-wrap:wrap; }
+    .msg-form { display:none; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:16px; }
+    .msg-form.succes { display:block; background:#f0faf0; border:1px solid var(--teal); color:var(--teal); }
+    .msg-form.erreur { display:block; background:#fdf0f3; border:1px solid var(--wine); color:var(--wine); }
 
     /* ── MOBILE ── */
-    .menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; background: var(--teal); color: #fff; border: none; border-radius: 8px; width: 40px; height: 40px; font-size: 20px; cursor: pointer; align-items: center; justify-content: center; }
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
-    @media (max-width: 768px) {
-      .menu-toggle { display: flex; }
-      .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-overlay.open { display: block; }
-      .main { margin-left: 0; padding: 72px 16px 24px; }
-      .event-card { grid-template-columns: 1fr; }
-      .event-img { width: 100%; height: 120px; }
-      .event-actions { flex-direction: row; }
-      .form-row, .form-row-3 { grid-template-columns: 1fr; }
-      .prix-grid { grid-template-columns: 1fr; }
+    .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--teal); color:#fff; border:none; border-radius:8px; width:40px; height:40px; font-size:20px; cursor:pointer; align-items:center; justify-content:center; }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:99; }
+    @media (max-width:768px) {
+      .menu-toggle { display:flex; }
+      .sidebar { transform:translateX(-100%); transition:transform 0.25s; }
+      .sidebar.open { transform:translateX(0); }
+      .sidebar-overlay.open { display:block; }
+      .main { margin-left:0; padding:72px 16px 24px; }
+      .event-card { grid-template-columns:1fr; }
+      .event-img { width:100%; height:120px; }
+      .event-actions { flex-direction:row; }
+      .form-row, .form-row-3 { grid-template-columns:1fr; }
+      .prix-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -174,61 +146,35 @@
   <button class="menu-toggle" id="menu-toggle">☰</button>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <img src="https://d1yei2z3i6k35z.cloudfront.net/15057727/69137015368ee_CIELFlogocrop.png" alt="CIELF">
-      <span class="sidebar-badge">Administration</span>
-    </div>
-    <div class="sidebar-user">
-      <div class="sidebar-user-nom" id="sidebar-nom">Chargement...</div>
-      <div class="sidebar-user-role" id="sidebar-role"></div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Principal</div>
-      <a class="nav-item" href="dashboard.html"><span class="nav-icon">🏠</span> Dashboard</a>
-      <div class="nav-section">Gestion</div>
-      <a class="nav-item active" href="evenements.html"><span class="nav-icon">📅</span> Événements</a>
-      <a class="nav-item" href="candidatures.html"><span class="nav-icon">📋</span> Candidatures <span class="nav-badge" id="badge-cand">—</span></a>
-      <a class="nav-item" href="membres.html"><span class="nav-icon">👥</span> Membres</a>
-      <div class="nav-section">Admin</div>
-      <a class="nav-item nav-item-disabled" href="#"><span class="nav-icon">⚙️</span> Paramètres <span class="nav-soon">Admin</span></a>
-    </nav>
-    <div class="sidebar-bottom">
-      <button class="btn-deconnexion" id="btn-deconnexion">← Se déconnecter</button>
-    </div>
-  </aside>
+  <!-- Sidebar chargée dynamiquement depuis sidebar.html -->
+  <div id="sidebar-container"></div>
 
   <main class="main">
     <div class="main-header">
       <h1>📅 Événements</h1>
       <button class="btn-primary" id="btn-nouvel-event">+ Nouvel événement</button>
     </div>
-
     <div class="filtres">
       <button class="filtre-btn active" data-filtre="tous">Tous</button>
       <button class="filtre-btn" data-filtre="avenir">À venir</button>
       <button class="filtre-btn" data-filtre="passes">Passés</button>
       <button class="filtre-btn" data-filtre="brouillon">Brouillons</button>
     </div>
-
     <div class="events-list" id="events-list">
       <div class="empty-state"><div class="empty-icon">📅</div><p>Chargement des événements...</p></div>
     </div>
   </main>
 
-  <!-- MODAL FORMULAIRE ÉVÉNEMENT -->
+  <!-- MODAL ÉVÉNEMENT -->
   <div class="modal-overlay" id="modal-event">
     <div class="modal-box">
       <div class="modal-header">
         <h2 id="modal-titre">Nouvel événement</h2>
         <button class="btn-close" id="btn-close-modal">✕</button>
       </div>
-
       <div class="msg-form" id="msg-form"></div>
 
-      <!-- Section : Infos de base -->
       <div class="form-section-title">Informations de base</div>
-
       <div class="form-row">
         <div class="form-group">
           <label>Type d'événement *</label>
@@ -252,7 +198,6 @@
           </select>
         </div>
       </div>
-
       <div class="form-row">
         <div class="form-group">
           <label>Statut</label>
@@ -271,31 +216,26 @@
           </select>
         </div>
       </div>
-
       <div class="form-group">
         <label>Titre de l'événement *</label>
         <input type="text" id="ev-titre" placeholder="Ex : Intelligence culturelle et business francophone">
       </div>
-
       <div class="form-group">
         <label>Description *</label>
         <textarea id="ev-description" placeholder="Décris l'événement en 2-4 phrases..."></textarea>
       </div>
 
-      <!-- Section : Dates & Horaires -->
       <div class="form-section-title">Dates &amp; Horaires</div>
-
       <div class="form-row">
         <div class="form-group">
           <label>Date de début *</label>
           <input type="date" id="ev-date">
         </div>
         <div class="form-group">
-          <label>Date de fin <span style="font-weight:400;color:var(--mid)">(optionnel — événement multi-jours)</span></label>
+          <label>Date de fin <span style="font-weight:400;color:var(--mid)">(optionnel)</span></label>
           <input type="date" id="ev-date-fin">
         </div>
       </div>
-
       <div class="form-row-3">
         <div class="form-group">
           <label>Heure de début</label>
@@ -316,24 +256,20 @@
             <option value="Asia/Singapore">Singapour (SGT)</option>
             <option value="Asia/Ho_Chi_Minh">Hô Chi Minh (ICT)</option>
           </select>
-          <div class="form-hint">Par défaut : Paris/Bruxelles. Changer uniquement pour les événements en présentiel hors Europe.</div>
+          <div class="form-hint">Par défaut : Paris/Bruxelles.</div>
         </div>
       </div>
 
-      <!-- Section : Inscription & Tarifs -->
       <div class="form-section-title">Inscription &amp; Tarifs</div>
-
       <div class="form-group" id="groupe-lien-inscription">
         <label>Lien d'inscription</label>
         <input type="url" id="ev-lien" placeholder="https://...">
         <div class="form-hint">Laisser vide si pas encore disponible</div>
       </div>
-
       <div class="form-group" id="groupe-lien-externe" style="display:none">
         <label>Lien vers l'événement externe</label>
         <input type="url" id="ev-lien-externe" placeholder="https://...">
       </div>
-
       <div id="groupe-prix" style="display:none">
         <div class="form-group">
           <label>Tarifs membres</label>
@@ -350,9 +286,7 @@
         </div>
       </div>
 
-      <!-- Section : Image -->
       <div class="form-section-title">Image</div>
-
       <div class="form-group">
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="ev-image" accept="image/jpeg,image/png,image/webp">
@@ -367,7 +301,6 @@
         <input type="hidden" id="ev-image-url">
       </div>
 
-      <!-- Preview carte -->
       <div class="preview-section">
         <div class="preview-section-titre">Aperçu de la carte</div>
         <div class="preview-carte" id="preview-carte">
@@ -391,82 +324,63 @@
   </div>
 
   <script type="module">
-    import { requireAdmin, deconnexion, db } from "./cielf-admin-auth.js";
-    import {
-      collection, getDocs, addDoc, doc, updateDoc, deleteDoc,
-      query, orderBy, Timestamp
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { requireAdmin, db }               from "./cielf-admin-auth.js";
+    import { chargerSidebar, majSidebarUser } from "./cielf-sidebar.js";
+    import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, Timestamp }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-    import { getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getApp }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
-    // ── DOM refs ──────────────────────────────────────────
-    const sidebar        = document.getElementById("sidebar");
-    const sidebarOverlay = document.getElementById("sidebar-overlay");
-    const menuToggle     = document.getElementById("menu-toggle");
-    const modalOverlay   = document.getElementById("modal-event");
-    const eventsList     = document.getElementById("events-list");
-    const msgForm        = document.getElementById("msg-form");
+    await chargerSidebar();
 
-    // Champs formulaire
-    const evType         = document.getElementById("ev-type");
-    const evFormat       = document.getElementById("ev-format");
-    const evStatut       = document.getElementById("ev-statut");
-    const evTitre        = document.getElementById("ev-titre");
-    const evDate         = document.getElementById("ev-date");
-    const evDateFin      = document.getElementById("ev-date-fin");
-    const evHeure        = document.getElementById("ev-heure");
-    const evFuseau       = document.getElementById("ev-fuseau");
-    const evDuree        = document.getElementById("ev-duree");
-    const evContact      = document.getElementById("ev-contact");
-    const evDescription  = document.getElementById("ev-description");
-    const evLien         = document.getElementById("ev-lien");
-    const evLienExterne  = document.getElementById("ev-lien-externe");
-    const evPrixL        = document.getElementById("ev-prix-leadership");
-    const evPrixD        = document.getElementById("ev-prix-dynamique");
-    const evImageInput   = document.getElementById("ev-image");
-    const evImageUrl     = document.getElementById("ev-image-url");
-    const uploadPreview  = document.getElementById("upload-preview");
-    const uploadText     = document.getElementById("upload-text");
-    const uploadProgress = document.getElementById("upload-progress");
-    const progressFill   = document.getElementById("progress-fill");
-    const uploadLabel    = document.getElementById("upload-label");
+    const modalOverlay  = document.getElementById("modal-event");
+    const eventsList    = document.getElementById("events-list");
+    const msgForm       = document.getElementById("msg-form");
+    const evType        = document.getElementById("ev-type");
+    const evFormat      = document.getElementById("ev-format");
+    const evStatut      = document.getElementById("ev-statut");
+    const evTitre       = document.getElementById("ev-titre");
+    const evDate        = document.getElementById("ev-date");
+    const evDateFin     = document.getElementById("ev-date-fin");
+    const evHeure       = document.getElementById("ev-heure");
+    const evFuseau      = document.getElementById("ev-fuseau");
+    const evDuree       = document.getElementById("ev-duree");
+    const evContact     = document.getElementById("ev-contact");
+    const evDescription = document.getElementById("ev-description");
+    const evLien        = document.getElementById("ev-lien");
+    const evLienExterne = document.getElementById("ev-lien-externe");
+    const evPrixL       = document.getElementById("ev-prix-leadership");
+    const evPrixD       = document.getElementById("ev-prix-dynamique");
+    const evImageInput  = document.getElementById("ev-image");
+    const evImageUrl    = document.getElementById("ev-image-url");
+    const uploadPreview = document.getElementById("upload-preview");
+    const uploadText    = document.getElementById("upload-text");
+    const uploadProgress= document.getElementById("upload-progress");
+    const progressFill  = document.getElementById("progress-fill");
+    const uploadLabel   = document.getElementById("upload-label");
 
     let filtreCourant = "tous";
     let tousLesEvents = [];
     let editId        = null;
 
-    // ── Menu mobile ───────────────────────────────────────
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-      sidebarOverlay.classList.toggle("open");
-    });
-    sidebarOverlay.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-      sidebarOverlay.classList.remove("open");
-    });
-    document.getElementById("btn-deconnexion").addEventListener("click", deconnexion);
-
-    // ── Affichage conditionnel champs selon type ──────────
+    // ── Champs conditionnels selon type ──────────────────────
     evType.addEventListener("change", () => {
       const t = evType.value;
-      document.getElementById("groupe-prix").style.display            = (t === "online" || t === "presentiel") ? "block" : "none";
+      document.getElementById("groupe-prix").style.display             = (t === "online" || t === "presentiel") ? "block" : "none";
       document.getElementById("groupe-lien-inscription").style.display = t === "externe" ? "none"  : "block";
       document.getElementById("groupe-lien-externe").style.display     = t === "externe" ? "block" : "none";
     });
 
-    // ── Aperçu image local ────────────────────────────────
+    // ── Aperçu image ─────────────────────────────────────────
     evImageInput.addEventListener("change", () => {
       const file = evImageInput.files[0];
       if (!file) return;
-      if (file.size > 5 * 1024 * 1024) {
-        afficherMsg("L'image dépasse 5Mo. Choisis une image plus légère.", "erreur");
-        evImageInput.value = "";
-        return;
-      }
+      if (file.size > 5 * 1024 * 1024) { afficherMsg("L'image dépasse 5Mo.", "erreur"); evImageInput.value = ""; return; }
       const reader = new FileReader();
       reader.onload = e => {
-        uploadPreview.src           = e.target.result;
+        uploadPreview.src = e.target.result;
         uploadPreview.style.display = "block";
         uploadText.style.display    = "none";
         document.getElementById("btn-retirer-image").style.display = "inline-block";
@@ -475,86 +389,60 @@
       reader.readAsDataURL(file);
     });
 
-    // ── Retirer image ─────────────────────────────────────
     document.getElementById("btn-retirer-image").addEventListener("click", () => {
-      evImageInput.value              = "";
-      evImageUrl.value                = "";
-      uploadPreview.src               = "";
-      uploadPreview.style.display     = "none";
-      uploadText.style.display        = "block";
+      evImageInput.value = ""; evImageUrl.value = "";
+      uploadPreview.src = ""; uploadPreview.style.display = "none";
+      uploadText.style.display = "block";
       document.getElementById("btn-retirer-image").style.display = "none";
       majPreview();
     });
 
-    // ── Preview carte temps réel ──────────────────────────
-    const labelFuseauPreview = {
-      "Europe/Paris": "Paris/Bruxelles", "America/Toronto": "Montréal",
-      "America/Vancouver": "Vancouver",  "Africa/Abidjan": "Abidjan/Dakar",
-      "Africa/Kinshasa": "Kinshasa",     "Asia/Singapore": "Singapour",
-      "Asia/Ho_Chi_Minh": "Hô Chi Minh"
-    };
-    const labelTypePreview   = { promo: "Gratuit", online: "En ligne CIELF", presentiel: "Présentiel", externe: "Externe" };
-    const classBadgePreview  = { promo: "pb-promo", online: "pb-online", presentiel: "pb-presentiel", externe: "pb-externe" };
-    const labelFormatPreview = { webinaire: "Webinaire", masterclass: "Masterclass", atelier: "Atelier", conference: "Conférence", networking: "Networking", voyage: "Voyage groupe" };
+    // ── Preview temps réel ────────────────────────────────────
+    const labelFuseauP = { "Europe/Paris":"Paris/Bruxelles","America/Toronto":"Montréal","America/Vancouver":"Vancouver","Africa/Abidjan":"Abidjan/Dakar","Africa/Kinshasa":"Kinshasa","Asia/Singapore":"Singapour","Asia/Ho_Chi_Minh":"Hô Chi Minh" };
+    const labelTypeP   = { promo:"Gratuit", online:"En ligne CIELF", presentiel:"Présentiel", externe:"Externe" };
+    const classBadgeP  = { promo:"pb-promo", online:"pb-online", presentiel:"pb-presentiel", externe:"pb-externe" };
+    const labelFormatP = { webinaire:"Webinaire", masterclass:"Masterclass", atelier:"Atelier", conference:"Conférence", networking:"Networking", voyage:"Voyage groupe" };
 
     function majPreview() {
-      const type    = evType.value;
-      const format  = evFormat.value;
-      const titre   = evTitre.value.trim()       || "Titre de l'événement";
-      const desc    = evDescription.value.trim() || "Description de l'événement...";
-      const dateVal = evDate.value;
-      const dateFinVal = evDateFin.value;
-      const heure   = evHeure.value;
-      const fuseau  = evFuseau.value;
-      const duree   = evDuree.value.trim();
-      const imgSrc  = uploadPreview.style.display !== "none" ? uploadPreview.src
-                    : evImageUrl.value || "";
+      const type = evType.value, format = evFormat.value;
+      const titre = evTitre.value.trim() || "Titre de l'événement";
+      const desc  = evDescription.value.trim() || "Description de l'événement...";
+      const imgSrc = uploadPreview.style.display !== "none" ? uploadPreview.src : evImageUrl.value || "";
 
-      // Image
       const imgWrap = document.getElementById("preview-img-wrap");
       if (imgSrc) {
         imgWrap.outerHTML = '<img class="preview-img" id="preview-img-wrap" src="' + imgSrc + '" alt="">';
       } else {
         const el = document.getElementById("preview-img-wrap");
-        if (el.tagName === "IMG") {
-          el.outerHTML = '<div class="preview-img-placeholder" id="preview-img-wrap"></div>';
-        }
+        if (el.tagName === "IMG") el.outerHTML = '<div class="preview-img-placeholder" id="preview-img-wrap"></div>';
       }
 
-      // Badges
-      const badgeFormat = format && labelFormatPreview[format]
-        ? '<span class="preview-badge pb-format">' + labelFormatPreview[format] + '</span>' : "";
+      const badgeFormat = format && labelFormatP[format] ? '<span class="preview-badge pb-format">' + labelFormatP[format] + '</span>' : "";
       document.getElementById("preview-badges").innerHTML =
-        '<span class="preview-badge ' + (classBadgePreview[type] || "pb-promo") + '">' + (labelTypePreview[type] || type) + '</span>'
-        + badgeFormat;
+        '<span class="preview-badge ' + (classBadgeP[type] || "pb-promo") + '">' + (labelTypeP[type] || type) + '</span>' + badgeFormat;
 
-      // Date
       let dateStr = "";
-      if (dateVal) {
-        const [y, m, d] = dateVal.split("-").map(Number);
-        const d1 = new Date(y, m - 1, d);
-        const opts = { day: "numeric", month: "long", year: "numeric" };
-        if (dateFinVal) {
-          const [yf, mf, df] = dateFinVal.split("-").map(Number);
-          const d2 = new Date(yf, mf - 1, df);
+      if (evDate.value) {
+        const [y,m,d] = evDate.value.split("-").map(Number);
+        const d1 = new Date(y, m-1, d);
+        const opts = { day:"numeric", month:"long", year:"numeric" };
+        if (evDateFin.value) {
+          const [yf,mf,df] = evDateFin.value.split("-").map(Number);
+          const d2 = new Date(yf, mf-1, df);
           dateStr = d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()
             ? d1.getDate() + " au " + d2.toLocaleDateString("fr-BE", opts)
             : d1.toLocaleDateString("fr-BE", opts) + " au " + d2.toLocaleDateString("fr-BE", opts);
         } else {
-          dateStr = d1.toLocaleDateString("fr-BE", { weekday: "long", ...opts });
-          if (heure) {
-            dateStr += " · " + heure + " (" + (labelFuseauPreview[fuseau] || "Paris/Bruxelles") + ")";
-            if (duree) dateStr += " · " + duree;
-          }
+          dateStr = d1.toLocaleDateString("fr-BE", { weekday:"long", ...opts });
+          if (evHeure.value) dateStr += " · " + evHeure.value + " (" + (labelFuseauP[evFuseau.value] || "Paris/Bruxelles") + ")" + (evDuree.value.trim() ? " · " + evDuree.value.trim() : "");
         }
       }
       document.getElementById("preview-date").textContent  = dateStr ? "📅 " + dateStr : "";
       document.getElementById("preview-titre").textContent = titre;
       document.getElementById("preview-desc").textContent  = desc;
 
-      // Prix
       let prixStr = "";
-      if (type === "promo")      prixStr = "Gratuit — ouvert à tous";
+      if (type === "promo")       prixStr = "Gratuit — ouvert à tous";
       else if (type === "online") prixStr = "Leadership+ : inclus · Dynamique : 1 gratuit/mois";
       else if (type === "presentiel") {
         const lp = evPrixL.value !== "" ? evPrixL.value + " € (Leadership+)" : "";
@@ -563,120 +451,59 @@
       }
       document.getElementById("preview-prix").textContent = prixStr;
 
-      // Bouton
       const btnEl = document.getElementById("preview-btn");
       btnEl.className = "preview-btn";
-      if (type === "online" || type === "presentiel") {
-        btnEl.textContent = "Réservé aux membres — S'inscrire";
-        btnEl.classList.add("pb-btn-membre");
-      } else if (type === "externe") {
-        btnEl.textContent = "Plus d'informations";
-        btnEl.style.background = "#ccadb5";
-        btnEl.style.color = "#4a2030";
-      } else {
-        btnEl.textContent = "Je m'inscris gratuitement";
-        btnEl.classList.add("pb-btn-principal");
-      }
+      if (type === "online" || type === "presentiel") { btnEl.textContent = "Réservé aux membres — S'inscrire"; btnEl.classList.add("pb-btn-membre"); }
+      else if (type === "externe") { btnEl.textContent = "Plus d'informations"; btnEl.style.background = "#ccadb5"; btnEl.style.color = "#4a2030"; }
+      else { btnEl.textContent = "Je m'inscris gratuitement"; btnEl.classList.add("pb-btn-principal"); }
     }
 
-    // Écouter tous les champs qui affectent la preview
     [evType, evFormat, evStatut, evContact, evFuseau].forEach(el => el.addEventListener("change", majPreview));
     [evTitre, evDescription, evDate, evDateFin, evHeure, evDuree, evPrixL, evPrixD].forEach(el => el.addEventListener("input", majPreview));
-    // getApp() récupère l'instance Firebase déjà initialisée par cielf-admin-auth.js
-    // sans risque de double initializeApp()
+
+    // ── Upload image ──────────────────────────────────────────
     async function uploadImage(file, slug) {
       const storage  = getStorage(getApp());
       const imageRef = ref(storage, "events/" + slug + "/" + Date.now() + "_" + file.name);
-
       return new Promise((resolve, reject) => {
-        uploadProgress.style.display = "block";
-        progressFill.style.width     = "0%";
-        uploadLabel.textContent      = "Upload en cours... 0%";
-
+        uploadProgress.style.display = "block"; progressFill.style.width = "0%"; uploadLabel.textContent = "Upload en cours... 0%";
         const task = uploadBytesResumable(imageRef, file);
-
         task.on("state_changed",
-          snap => {
-            const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-            progressFill.style.width = pct + "%";
-            uploadLabel.textContent  = "Upload en cours... " + pct + "%";
-          },
-          err => {
-            uploadProgress.style.display = "none";
-            reject(err);
-          },
-          async () => {
-            const url = await getDownloadURL(task.snapshot.ref);
-            uploadProgress.style.display = "none";
-            progressFill.style.width     = "0%";
-            resolve(url);
-          }
+          snap => { const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100); progressFill.style.width = pct + "%"; uploadLabel.textContent = "Upload en cours... " + pct + "%"; },
+          err  => { uploadProgress.style.display = "none"; reject(err); },
+          async () => { const url = await getDownloadURL(task.snapshot.ref); uploadProgress.style.display = "none"; progressFill.style.width = "0%"; resolve(url); }
         );
       });
     }
 
-    // ── Ouvrir modal ──────────────────────────────────────
+    // ── Modal ─────────────────────────────────────────────────
     function ouvrirModal(event = null) {
       editId = event ? event.id : null;
       document.getElementById("modal-titre").textContent = event ? "Modifier l'événement" : "Nouvel événement";
-      cacherMsg();
-      resetFormulaire();
-
+      cacherMsg(); resetFormulaire();
       if (event) {
-        evType.value        = event.type        || "promo";
-        evFormat.value      = event.format      || "";
-        evStatut.value      = event.statut      || "brouillon";
-        evTitre.value       = event.titre       || "";
-        evHeure.value       = event.heure       || "20:00";
-        evFuseau.value      = event.fuseau      || "Europe/Paris";
-        evDuree.value       = event.duree       || "";
-        evContact.value     = event.contact     || "juliette";
-        evDescription.value = event.description || "";
-        evLien.value        = event.lienInscription || "";
-        evLienExterne.value = event.lienExterne  || "";
-        evPrixL.value       = event.prixLeadership ?? "";
-        evPrixD.value       = event.prixDynamique  ?? "";
-        evImageUrl.value    = event.imageUrl    || "";
-
-        if (event.imageUrl) {
-          uploadPreview.src           = event.imageUrl;
-          uploadPreview.style.display = "block";
-          uploadText.style.display    = "none";
-          document.getElementById("btn-retirer-image").style.display = "inline-block";
-        }
-        // Date début : Timestamp → YYYY-MM-DD
-        if (event.date && event.date.toDate) {
-          evDate.value = event.date.toDate().toISOString().split("T")[0];
-        }
-        // Date fin : Timestamp → YYYY-MM-DD
-        if (event.dateFin && event.dateFin.toDate) {
-          evDateFin.value = event.dateFin.toDate().toISOString().split("T")[0];
-        }
+        evType.value = event.type || "promo"; evFormat.value = event.format || ""; evStatut.value = event.statut || "brouillon";
+        evTitre.value = event.titre || ""; evHeure.value = event.heure || "20:00"; evFuseau.value = event.fuseau || "Europe/Paris";
+        evDuree.value = event.duree || ""; evContact.value = event.contact || "juliette";
+        evDescription.value = event.description || ""; evLien.value = event.lienInscription || ""; evLienExterne.value = event.lienExterne || "";
+        evPrixL.value = event.prixLeadership ?? ""; evPrixD.value = event.prixDynamique ?? ""; evImageUrl.value = event.imageUrl || "";
+        if (event.imageUrl) { uploadPreview.src = event.imageUrl; uploadPreview.style.display = "block"; uploadText.style.display = "none"; document.getElementById("btn-retirer-image").style.display = "inline-block"; }
+        if (event.date?.toDate)    evDate.value    = event.date.toDate().toISOString().split("T")[0];
+        if (event.dateFin?.toDate) evDateFin.value = event.dateFin.toDate().toISOString().split("T")[0];
       }
-
-      evType.dispatchEvent(new Event("change"));
-      majPreview();
+      evType.dispatchEvent(new Event("change")); majPreview();
       modalOverlay.classList.add("open");
     }
 
-    function fermerModal() {
-      modalOverlay.classList.remove("open");
-      editId = null;
-    }
+    function fermerModal() { modalOverlay.classList.remove("open"); editId = null; }
 
     function resetFormulaire() {
-      evType.value = "promo"; evFormat.value = ""; evStatut.value = "brouillon";
-      evTitre.value = ""; evDate.value = ""; evDateFin.value = "";
-      evHeure.value = "20:00"; evFuseau.value = "Europe/Paris";
-      evDuree.value = ""; evContact.value = "juliette";
-      evDescription.value = ""; evLien.value = ""; evLienExterne.value = "";
-      evPrixL.value = ""; evPrixD.value = "";
+      evType.value = "promo"; evFormat.value = ""; evStatut.value = "brouillon"; evTitre.value = ""; evDate.value = ""; evDateFin.value = "";
+      evHeure.value = "20:00"; evFuseau.value = "Europe/Paris"; evDuree.value = ""; evContact.value = "juliette";
+      evDescription.value = ""; evLien.value = ""; evLienExterne.value = ""; evPrixL.value = ""; evPrixD.value = "";
       evImageUrl.value = ""; evImageInput.value = "";
-      uploadPreview.style.display  = "none";
-      uploadText.style.display     = "block";
-      document.getElementById("btn-retirer-image").style.display = "none";
-      uploadProgress.style.display = "none";
-      progressFill.style.width     = "0%";
+      uploadPreview.style.display = "none"; uploadText.style.display = "block";
+      document.getElementById("btn-retirer-image").style.display = "none"; uploadProgress.style.display = "none"; progressFill.style.width = "0%";
     }
 
     document.getElementById("btn-nouvel-event").addEventListener("click", () => ouvrirModal());
@@ -684,70 +511,36 @@
     document.getElementById("btn-annuler").addEventListener("click", fermerModal);
     modalOverlay.addEventListener("click", e => { if (e.target === modalOverlay) fermerModal(); });
 
-    // ── Sauvegarder ───────────────────────────────────────
+    // ── Sauvegarder ───────────────────────────────────────────
     document.getElementById("btn-sauvegarder").addEventListener("click", async () => {
       cacherMsg();
       if (!evTitre.value.trim())       { afficherMsg("Le titre est obligatoire.", "erreur"); return; }
       if (!evDate.value)                { afficherMsg("La date de début est obligatoire.", "erreur"); return; }
       if (!evDescription.value.trim()) { afficherMsg("La description est obligatoire.", "erreur"); return; }
-
-      // Vérifier cohérence dates
-      if (evDateFin.value && evDateFin.value < evDate.value) {
-        afficherMsg("La date de fin doit être après la date de début.", "erreur");
-        return;
-      }
+      if (evDateFin.value && evDateFin.value < evDate.value) { afficherMsg("La date de fin doit être après la date de début.", "erreur"); return; }
 
       const btnSave = document.getElementById("btn-sauvegarder");
-      btnSave.disabled    = true;
-      btnSave.textContent = "Enregistrement...";
-
+      btnSave.disabled = true; btnSave.textContent = "Enregistrement...";
       try {
-        // Slug : titre + date
-        const slug = evTitre.value.trim()
-          .toLowerCase()
-          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^a-z0-9\s-]/g, "")
-          .replace(/\s+/g, "-")
-          .substring(0, 60)
-          + "-" + evDate.value;
-
-        // Upload image si nouveau fichier
+        const slug = evTitre.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").substring(0,60) + "-" + evDate.value;
         let imageUrl = evImageUrl.value;
-        if (evImageInput.files[0]) {
-          imageUrl = await uploadImage(evImageInput.files[0], slug);
-        }
+        if (evImageInput.files[0]) imageUrl = await uploadImage(evImageInput.files[0], slug);
 
-        // Construire Timestamp date début (avec heure)
-        const [y, m, d]   = evDate.value.split("-").map(Number);
-        const [hh, mm]    = (evHeure.value || "20:00").split(":").map(Number);
-        const dateObj     = new Date(y, m - 1, d, hh, mm);
-
-        // Construire Timestamp date fin si présente (fin de journée)
+        const [y,m,d]   = evDate.value.split("-").map(Number);
+        const [hh,mm]   = (evHeure.value || "20:00").split(":").map(Number);
+        const dateObj   = new Date(y, m-1, d, hh, mm);
         let dateFinTimestamp = null;
-        if (evDateFin.value) {
-          const [yf, mf, df] = evDateFin.value.split("-").map(Number);
-          dateFinTimestamp = Timestamp.fromDate(new Date(yf, mf - 1, df, 23, 59));
-        }
+        if (evDateFin.value) { const [yf,mf,df] = evDateFin.value.split("-").map(Number); dateFinTimestamp = Timestamp.fromDate(new Date(yf, mf-1, df, 23, 59)); }
 
         const data = {
-          titre:           evTitre.value.trim(),
-          type:            evType.value,
-          format:          evFormat.value || null,
-          statut:          evStatut.value,
-          date:            Timestamp.fromDate(dateObj),
-          dateFin:         dateFinTimestamp,
-          heure:           evHeure.value,
-          fuseau:          evFuseau.value || "Europe/Paris",
-          duree:           evDuree.value.trim(),
-          contact:         evContact.value,
-          description:     evDescription.value.trim(),
-          lienInscription: evLien.value.trim(),
-          lienExterne:     evLienExterne.value.trim(),
-          prixLeadership:  evPrixL.value !== "" ? Number(evPrixL.value) : null,
-          prixDynamique:   evPrixD.value !== "" ? Number(evPrixD.value) : null,
-          imageUrl:        imageUrl,
-          slug:            slug,
-          updatedAt:       Timestamp.now()
+          titre: evTitre.value.trim(), type: evType.value, format: evFormat.value || null,
+          statut: evStatut.value, date: Timestamp.fromDate(dateObj), dateFin: dateFinTimestamp,
+          heure: evHeure.value, fuseau: evFuseau.value || "Europe/Paris", duree: evDuree.value.trim(),
+          contact: evContact.value, description: evDescription.value.trim(),
+          lienInscription: evLien.value.trim(), lienExterne: evLienExterne.value.trim(),
+          prixLeadership: evPrixL.value !== "" ? Number(evPrixL.value) : null,
+          prixDynamique:  evPrixD.value !== "" ? Number(evPrixD.value) : null,
+          imageUrl: imageUrl, slug: slug, updatedAt: Timestamp.now()
         };
 
         if (editId) {
@@ -758,20 +551,16 @@
           await addDoc(collection(db, "events"), data);
           afficherMsg("Événement créé ✓", "succes");
         }
-
         await chargerEvenements();
         setTimeout(fermerModal, 1200);
-
       } catch (err) {
-        console.error(err);
-        afficherMsg("Erreur : " + err.message, "erreur");
+        console.error(err); afficherMsg("Erreur : " + err.message, "erreur");
       } finally {
-        btnSave.disabled    = false;
-        btnSave.textContent = "Enregistrer";
+        btnSave.disabled = false; btnSave.textContent = "Enregistrer";
       }
     });
 
-    // ── Charger événements ────────────────────────────────
+    // ── Charger et afficher ───────────────────────────────────
     async function chargerEvenements() {
       try {
         const snap = await getDocs(query(collection(db, "events"), orderBy("date", "asc")));
@@ -782,73 +571,41 @@
       }
     }
 
-    // ── Libellés ──────────────────────────────────────────
-    const labelFuseau = {
-      "Europe/Paris":       "CET",
-      "America/Toronto":    "EST",
-      "America/Vancouver":  "PST",
-      "Africa/Abidjan":     "GMT",
-      "Africa/Kinshasa":    "WAT",
-      "Asia/Singapore":     "SGT",
-      "Asia/Ho_Chi_Minh":   "ICT"
-    };
-    const labelFormat = {
-      webinaire: "Webinaire", masterclass: "Masterclass", atelier: "Atelier",
-      conference: "Conférence", networking: "Networking", voyage: "Voyage groupe"
-    };
-    const labelContact = {
-      juliette: "Juliette", genevieve: "Geneviève",
-      "les-deux": "Juliette & Geneviève", externe: "Intervenant externe"
-    };
+    const labelFuseau  = { "Europe/Paris":"CET","America/Toronto":"EST","America/Vancouver":"PST","Africa/Abidjan":"GMT","Africa/Kinshasa":"WAT","Asia/Singapore":"SGT","Asia/Ho_Chi_Minh":"ICT" };
+    const labelFormat  = { webinaire:"Webinaire", masterclass:"Masterclass", atelier:"Atelier", conference:"Conférence", networking:"Networking", voyage:"Voyage groupe" };
+    const labelContact = { juliette:"Juliette", genevieve:"Geneviève", "les-deux":"Juliette & Geneviève", externe:"Intervenant externe" };
 
-    // ── Afficher liste ────────────────────────────────────
     function afficherEvenements() {
       const now = new Date();
       let filtres = tousLesEvents;
-
-      if (filtreCourant === "avenir")    filtres = tousLesEvents.filter(e => {
-        const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate();
-        return fin >= now && e.statut === "publie";
-      });
-      if (filtreCourant === "passes")    filtres = tousLesEvents.filter(e => {
-        const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate();
-        return fin < now;
-      });
+      if (filtreCourant === "avenir")    filtres = tousLesEvents.filter(e => { const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate(); return fin >= now && e.statut === "publie"; });
+      if (filtreCourant === "passes")    filtres = tousLesEvents.filter(e => { const fin = e.dateFin?.toDate ? e.dateFin.toDate() : e.date?.toDate(); return fin < now; });
       if (filtreCourant === "brouillon") filtres = tousLesEvents.filter(e => e.statut === "brouillon");
 
-      if (filtres.length === 0) {
-        eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>📅</div><p>Aucun événement dans cette catégorie.</p></div>";
-        return;
-      }
+      if (filtres.length === 0) { eventsList.innerHTML = "<div class='empty-state'><div class='empty-icon'>📅</div><p>Aucun événement dans cette catégorie.</p></div>"; return; }
 
+      const opts = { day:"numeric", month:"long", year:"numeric" };
       eventsList.innerHTML = filtres.map(e => {
-        // Formatage date
-        const opts = { day:"numeric", month:"long", year:"numeric" };
         let dateStr = "Date non définie";
         if (e.date?.toDate) {
           const d1 = e.date.toDate();
-          if (e.dateFin?.toDate) {
-            const d2 = e.dateFin.toDate();
-            dateStr = d1.toLocaleDateString("fr-BE", opts) + " → " + d2.toLocaleDateString("fr-BE", opts);
-          } else {
-            dateStr = d1.toLocaleDateString("fr-BE", { weekday:"long", ...opts });
-          }
+          dateStr = e.dateFin?.toDate
+            ? d1.toLocaleDateString("fr-BE", opts) + " → " + e.dateFin.toDate().toLocaleDateString("fr-BE", opts)
+            : d1.toLocaleDateString("fr-BE", { weekday:"long", ...opts });
         }
         const fuseauLabel = labelFuseau[e.fuseau] || "CET";
         const heureStr    = e.heure ? e.heure + " (" + fuseauLabel + ")" + (e.duree ? " · " + e.duree : "") : "";
-
-        const tagType    = { promo:"tag-promo", online:"tag-membres", presentiel:"tag-membres", externe:"tag-externe" }[e.type] || "tag-promo";
-        const labelType  = { promo:"Ouvert à tous", online:"En ligne", presentiel:"Présentiel", externe:"Externe" }[e.type] || e.type;
-        const tagStatut  = e.statut === "publie" ? "tag-publie" : "tag-brouillon";
-        const imgContent = e.imageUrl ? "<img src='" + e.imageUrl + "' alt=''>" : "<span style='font-size:32px'>📅</span>";
-        const btnStatut  = e.statut === "publie" ? "Dépublier" : "Publier";
-        const btnClass   = e.statut === "publie" ? "btn-toggle-statut depublier" : "btn-toggle-statut";
+        const tagType     = { promo:"tag-promo", online:"tag-membres", presentiel:"tag-membres", externe:"tag-externe" }[e.type] || "tag-promo";
+        const labelType   = { promo:"Ouvert à tous", online:"En ligne", presentiel:"Présentiel", externe:"Externe" }[e.type] || e.type;
+        const tagStatut   = e.statut === "publie" ? "tag-publie" : "tag-brouillon";
+        const imgContent  = e.imageUrl ? "<img src='" + e.imageUrl + "' alt=''>" : "<span style='font-size:32px'>📅</span>";
+        const btnClass    = e.statut === "publie" ? "btn-toggle-statut depublier" : "btn-toggle-statut";
 
         return "<div class='event-card'>"
           + "<div class='event-img'>" + imgContent + "</div>"
           + "<div class='event-body'>"
           +   "<div class='event-tags'>"
-          +     "<span class='tag " + tagType + "'>" + labelType + "</span>"
+          +     "<span class='tag " + tagType   + "'>" + labelType + "</span>"
           +     "<span class='tag " + tagStatut + "'>" + (e.statut === "publie" ? "Publié" : "Brouillon") + "</span>"
           +     (e.format ? "<span class='tag tag-format'>" + (labelFormat[e.format] || e.format) + "</span>" : "")
           +   "</div>"
@@ -861,36 +618,21 @@
           + "</div>"
           + "<div class='event-actions'>"
           +   "<button class='btn-edit' onclick='window._editEvent(\"" + e.id + "\")'>Modifier</button>"
-          +   "<button class='" + btnClass + "' onclick='window._toggleStatut(\"" + e.id + "\",\"" + e.statut + "\")'>" + btnStatut + "</button>"
+          +   "<button class='" + btnClass + "' onclick='window._toggleStatut(\"" + e.id + "\",\"" + e.statut + "\")'>" + (e.statut === "publie" ? "Dépublier" : "Publier") + "</button>"
           +   "<button class='btn-delete' onclick='window._deleteEvent(\"" + e.id + "\")'>Supprimer</button>"
           + "</div>"
           + "</div>";
       }).join("");
     }
 
-    // Actions globales
-    window._editEvent = id => {
-      const ev = tousLesEvents.find(e => e.id === id);
-      if (ev) ouvrirModal(ev);
-    };
-    window._deleteEvent = async id => {
-      if (!confirm("Supprimer cet événement ? Cette action est irréversible.")) return;
-      await deleteDoc(doc(db, "events", id));
-      await chargerEvenements();
-    };
-    window._toggleStatut = async (id, statutActuel) => {
-      const nouveau = statutActuel === "publie" ? "brouillon" : "publie";
-      await updateDoc(doc(db, "events", id), { statut: nouveau, updatedAt: Timestamp.now() });
-      await chargerEvenements();
-    };
+    window._editEvent     = id => { const ev = tousLesEvents.find(e => e.id === id); if (ev) ouvrirModal(ev); };
+    window._deleteEvent   = async id => { if (!confirm("Supprimer cet événement ? Cette action est irréversible.")) return; await deleteDoc(doc(db, "events", id)); await chargerEvenements(); };
+    window._toggleStatut  = async (id, statut) => { await updateDoc(doc(db, "events", id), { statut: statut === "publie" ? "brouillon" : "publie", updatedAt: Timestamp.now() }); await chargerEvenements(); };
 
-    // ── Filtres ───────────────────────────────────────────
     document.querySelectorAll(".filtre-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".filtre-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        filtreCourant = btn.dataset.filtre;
-        afficherEvenements();
+        btn.classList.add("active"); filtreCourant = btn.dataset.filtre; afficherEvenements();
       });
     });
 
@@ -899,10 +641,8 @@
 
     if (new URLSearchParams(window.location.search).get("action") === "nouveau") ouvrirModal();
 
-    // ── Init ──────────────────────────────────────────────
     requireAdmin(async (user, role) => {
-      document.getElementById("sidebar-nom").textContent  = sessionStorage.getItem("cielf_admin_nom") || user.email;
-      document.getElementById("sidebar-role").textContent = role === "admin" ? "Administratrice" : "Éditrice";
+      majSidebarUser(sessionStorage.getItem("cielf_admin_nom") || user.email, role);
       await chargerEvenements();
     });
   </script>
