@@ -9,6 +9,8 @@
     :root { --teal:#13686b; --wine:#861b3f; --purple:#ccadb5; --cream:#fafaf2; --cyan:#82adad; --dark:#2c2c2c; --mid:#666; --sidebar-w:240px; }
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; }
+
+    /* ── SIDEBAR (styles partagés) ── */
     .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; background:var(--teal); display:flex; flex-direction:column; z-index:100; overflow-y:auto; }
     .sidebar-logo { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
     .sidebar-logo img { height:40px; }
@@ -22,51 +24,52 @@
     .nav-item:hover { background:rgba(255,255,255,0.1); color:#fff; }
     .nav-item.active { background:rgba(255,255,255,0.18); color:#fff; font-weight:800; }
     .nav-icon { font-size:16px; width:20px; text-align:center; }
-    .nav-badge { margin-left:auto; background:var(--wine); color:#fff; font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; }
     .nav-item-disabled { opacity:0.4; cursor:not-allowed; pointer-events:none; }
     .nav-soon { margin-left:auto; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); }
     .sidebar-bottom { padding:16px 24px; border-top:1px solid rgba(255,255,255,0.15); }
     .btn-deconnexion { width:100%; padding:10px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.2); border-radius:8px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; }
     .btn-deconnexion:hover { background:rgba(255,255,255,0.2); color:#fff; }
+
+    /* ── LAYOUT ── */
     .main { margin-left:var(--sidebar-w); min-height:100vh; padding:32px; }
     .main-header { margin-bottom:28px; }
     .main-header h1 { font-size:22px; font-weight:800; color:var(--teal); }
     .main-header p { font-size:14px; color:var(--mid); margin-top:4px; }
 
-    /* Cards candidatures */
+    /* ── CANDIDATURES ── */
     .cand-list { display:flex; flex-direction:column; gap:12px; }
     .cand-card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:20px 24px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; }
     .cand-nom { font-size:16px; font-weight:800; color:var(--dark); margin-bottom:4px; }
     .cand-meta { font-size:13px; color:var(--mid); margin-bottom:10px; }
     .cand-infos { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--mid); }
-    .cand-infos span { display:flex; align-items:center; gap:4px; }
+    .badge-statut { display:inline-block; font-size:10px; font-weight:800; padding:3px 10px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; }
+    .statut-attente  { background:#fff8e1; color:#c47a1e; }
+    .statut-visio    { background:#e3f2fd; color:#1565c0; }
+    .statut-accepte  { background:#e8f5e9; color:#2e7d32; }
+    .statut-refuse   { background:#fce4ec; color:#880e4f; }
     .statut-select { padding:8px 12px; border:1.5px solid #ddd; border-radius:8px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; background:#fff; color:var(--dark); }
     .statut-select:focus { outline:none; border-color:var(--teal); }
     .btn-voir { margin-top:8px; width:100%; padding:8px; background:var(--cream); color:var(--teal); border:1.5px solid var(--teal); border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; }
     .btn-voir:hover { background:var(--teal); color:#fff; }
 
-    /* Badge statut */
-    .badge-statut { display:inline-block; font-size:10px; font-weight:800; padding:3px 10px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; }
-    .statut-attente   { background:#fff8e1; color:#c47a1e; }
-    .statut-visio     { background:#e3f2fd; color:#1565c0; }
-    .statut-accepte   { background:#e8f5e9; color:#2e7d32; }
-    .statut-refuse    { background:#fce4ec; color:#880e4f; }
-
-    /* Modal dossier */
+    /* ── MODAL DOSSIER ── */
     .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:500; align-items:flex-start; justify-content:center; padding:24px; overflow-y:auto; }
     .modal-overlay.open { display:flex; }
     .modal-box { background:#fff; border-radius:16px; width:100%; max-width:680px; padding:36px 32px; margin:auto; box-shadow:0 8px 40px rgba(0,0,0,0.18); }
     .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
     .modal-header h2 { font-size:18px; font-weight:800; color:var(--teal); }
     .btn-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--mid); }
-    .dossier-section { margin-bottom:20px; }
+    .btn-close:hover { color:var(--wine); }
+    .dossier-section { margin-bottom:16px; }
     .dossier-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--mid); margin-bottom:6px; }
     .dossier-value { font-size:14px; color:var(--dark); line-height:1.6; }
     .dossier-divider { border:none; border-top:1px solid #eee; margin:16px 0; }
 
+    /* ── ÉTATS VIDES ── */
     .empty-state { text-align:center; padding:60px 20px; color:var(--mid); }
     .empty-icon { font-size:48px; margin-bottom:12px; }
 
+    /* ── MOBILE ── */
     .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--teal); color:#fff; border:none; border-radius:8px; width:40px; height:40px; font-size:20px; cursor:pointer; align-items:center; justify-content:center; }
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:99; }
     @media (max-width:768px) {
@@ -80,37 +83,17 @@
   </style>
 </head>
 <body>
+
   <button class="menu-toggle" id="menu-toggle">☰</button>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <img src="https://d1yei2z3i6k35z.cloudfront.net/15057727/69137015368ee_CIELFlogocrop.png" alt="CIELF">
-      <span class="sidebar-badge">Administration</span>
-    </div>
-    <div class="sidebar-user">
-      <div class="sidebar-user-nom" id="sidebar-nom">Chargement...</div>
-      <div class="sidebar-user-role" id="sidebar-role"></div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Principal</div>
-      <a class="nav-item" href="dashboard.html"><span class="nav-icon">🏠</span> Dashboard</a>
-      <div class="nav-section">Gestion</div>
-      <a class="nav-item" href="evenements.html"><span class="nav-icon">📅</span> Événements</a>
-      <a class="nav-item active" href="candidatures.html"><span class="nav-icon">📋</span> Candidatures</a>
-      <a class="nav-item" href="membres.html"><span class="nav-icon">👥</span> Membres</a>
-      <div class="nav-section">Admin</div>
-      <a class="nav-item nav-item-disabled" href="#"><span class="nav-icon">⚙️</span> Paramètres <span class="nav-soon">Admin</span></a>
-    </nav>
-    <div class="sidebar-bottom">
-      <button class="btn-deconnexion" id="btn-deconnexion">← Se déconnecter</button>
-    </div>
-  </aside>
+  <!-- Sidebar chargée dynamiquement depuis sidebar.html -->
+  <div id="sidebar-container"></div>
 
   <main class="main">
     <div class="main-header">
       <h1>📋 Candidatures</h1>
-      <p>Gérez les dossiers de candidature CIELF</p>
+      <p>Dossiers soumis via cielf.com/candidature (collection pending_members)</p>
     </div>
     <div class="cand-list" id="cand-list">
       <div class="empty-state"><div class="empty-icon">⏳</div><p>Chargement...</p></div>
@@ -129,27 +112,22 @@
   </div>
 
   <script type="module">
-    import { requireAdmin, deconnexion, db } from "./cielf-admin-auth.js";
-    import { collection, getDocs, doc, updateDoc, orderBy, query }
+    import { requireAdmin, db }               from "./cielf-admin-auth.js";
+    import { chargerSidebar, majSidebarUser } from "./cielf-sidebar.js";
+    import { collection, getDocs, doc, updateDoc }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const sidebar        = document.getElementById("sidebar");
-    const sidebarOverlay = document.getElementById("sidebar-overlay");
-    document.getElementById("menu-toggle").addEventListener("click", () => { sidebar.classList.toggle("open"); sidebarOverlay.classList.toggle("open"); });
-    sidebarOverlay.addEventListener("click", () => { sidebar.classList.remove("open"); sidebarOverlay.classList.remove("open"); });
-    document.getElementById("btn-deconnexion").addEventListener("click", deconnexion);
-    document.getElementById("btn-close-dossier").addEventListener("click", () => document.getElementById("modal-dossier").classList.remove("open"));
+    await chargerSidebar();
+
+    const candList    = document.getElementById("cand-list");
+    const modalDossier = document.getElementById("modal-dossier");
+
+    document.getElementById("btn-close-dossier").addEventListener("click", () => modalDossier.classList.remove("open"));
+    modalDossier.addEventListener("click", e => { if (e.target === modalDossier) modalDossier.classList.remove("open"); });
 
     let toutes = [];
 
-    // Note : les candidatures viennent du Google Sheets via Apps Script.
-    // Ici on charge la collection pending_members de Firestore
-    // (membres en attente de validation technique) + on peut aussi
-    // charger depuis le Sheets via une future intégration.
-    // Pour l'instant : affichage depuis pending_members Firestore.
-
     async function charger() {
-      const candList = document.getElementById("cand-list");
       try {
         const snap = await getDocs(collection(db, "pending_members"));
         toutes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -159,34 +137,31 @@
           return;
         }
 
-        candList.innerHTML = toutes.map(c => {
-          const statutClasse = {
-            "En attente":       "statut-attente",
-            "Visio planifiée":  "statut-visio",
-            "Accepté":          "statut-accepte",
-            "Refusé":           "statut-refuse"
-          }[c.statut] || "statut-attente";
+        const classeStatut = { "En attente":"statut-attente", "Visio planifiée":"statut-visio", "Accepté":"statut-accepte", "Refusé":"statut-refuse" };
 
-          return "<div class='cand-card'>" +
-            "<div>" +
-              "<div class='cand-nom'>" + (c.prenom || "") + " " + (c.nom || "") +
-                " <span class='badge-statut " + statutClasse + "'>" + (c.statut || "En attente") + "</span></div>" +
-              "<div class='cand-meta'>" + (c.nomEntreprise || "") + " · " + (c.pays || "") + "</div>" +
-              "<div class='cand-infos'>" +
-                "<span>📧 " + (c.email || "") + "</span>" +
-                "<span>💼 " + (c.secteur || "—") + "</span>" +
-                (c.createdAt ? "<span>📅 " + c.createdAt.toDate().toLocaleDateString("fr-BE") + "</span>" : "") +
-              "</div>" +
-              "<button class='btn-voir' onclick='window._voirDossier(\"" + c.id + "\")'>Voir le dossier complet</button>" +
-            "</div>" +
-            "<div>" +
-              "<select class='statut-select' onchange='window._changerStatut(\"" + c.id + "\", this.value)'>" +
-                ["En attente","Visio planifiée","Accepté","Refusé"].map(s =>
-                  "<option value='" + s + "'" + (c.statut === s ? " selected" : "") + ">" + s + "</option>"
-                ).join("") +
-              "</select>" +
-            "</div>" +
-          "</div>";
+        candList.innerHTML = toutes.map(c => {
+          const sc = classeStatut[c.statut] || "statut-attente";
+          const dateStr = c.createdAt?.toDate ? c.createdAt.toDate().toLocaleDateString("fr-BE") : "";
+          const options = ["En attente","Visio planifiée","Accepté","Refusé"]
+            .map(s => "<option value='" + s + "'" + (c.statut === s ? " selected" : "") + ">" + s + "</option>")
+            .join("");
+
+          return "<div class='cand-card'>"
+            + "<div>"
+            +   "<div class='cand-nom'>" + (c.prenom || "") + " " + (c.nom || "")
+            +     " <span class='badge-statut " + sc + "'>" + (c.statut || "En attente") + "</span></div>"
+            +   "<div class='cand-meta'>" + (c.nomEntreprise || "") + (c.pays ? " · " + c.pays : "") + "</div>"
+            +   "<div class='cand-infos'>"
+            +     "<span>📧 " + (c.email || "") + "</span>"
+            +     (c.secteur ? "<span>💼 " + c.secteur + "</span>" : "")
+            +     (dateStr   ? "<span>📅 " + dateStr   + "</span>" : "")
+            +   "</div>"
+            +   "<button class='btn-voir' onclick='window._voirDossier(\"" + c.id + "\")'>Voir le dossier complet</button>"
+            + "</div>"
+            + "<div>"
+            +   "<select class='statut-select' onchange='window._changerStatut(\"" + c.id + "\", this.value)'>" + options + "</select>"
+            + "</div>"
+            + "</div>";
         }).join("");
 
       } catch (err) {
@@ -202,47 +177,42 @@
       }
     };
 
-    window._voirDossier = (id) => {
+    window._voirDossier = id => {
       const c = toutes.find(x => x.id === id);
       if (!c) return;
+
       document.getElementById("modal-nom-cand").textContent = (c.prenom || "") + " " + (c.nom || "");
+
       const champs = [
-        { label:"Email",                    val: c.email },
-        { label:"Téléphone",                val: c.telephone },
-        { label:"Pays / Ville",             val: (c.pays || "") + " — " + (c.ville || "") },
-        { label:"Entreprise",               val: c.nomEntreprise },
-        { label:"Secteur",                  val: c.secteur },
-        { label:"Ancienneté",               val: c.anciennete },
-        { label:"Site web",                 val: c.siteWeb },
-        { label:"LinkedIn",                 val: c.linkedin },
-        { label:"Description business",     val: c.descriptionBusiness },
-        { label:"Vision internationale",    val: c.visionInternationale },
-        { label:"Pays visés",               val: c.paysVises },
-        { label:"Pourquoi CIELF",           val: c.pourquoiCIELF },
-        { label:"Apport à la communauté",   val: c.apport },
-        { label:"Valeur CIELF",             val: c.valeur },
-        { label:"Source",                   val: c.source },
+        { label:"Email",                  val: c.email },
+        { label:"Téléphone",              val: c.telephone },
+        { label:"Pays / Ville",           val: [c.pays, c.ville].filter(Boolean).join(" — ") },
+        { label:"Entreprise",             val: c.nomEntreprise },
+        { label:"Secteur",                val: c.secteur },
+        { label:"Ancienneté",             val: c.anciennete },
+        { label:"Site web",               val: c.siteWeb },
+        { label:"LinkedIn",               val: c.linkedin },
+        { label:"Description business",   val: c.descriptionBusiness },
+        { label:"Vision internationale",  val: c.visionInternationale },
+        { label:"Pays visés",             val: c.paysVises },
+        { label:"Pourquoi CIELF",         val: c.pourquoiCIELF },
+        { label:"Apport à la communauté", val: c.apport },
+        { label:"Valeur CIELF",           val: c.valeur },
+        { label:"Source",                 val: c.source },
       ].filter(f => f.val);
 
-      document.getElementById("modal-contenu-dossier").innerHTML =
-        champs.map(f =>
-          "<div class='dossier-section'>" +
-            "<div class='dossier-label'>" + f.label + "</div>" +
-            "<div class='dossier-value'>" + f.val + "</div>" +
-          "</div><hr class='dossier-divider'>"
-        ).join("");
+      document.getElementById("modal-contenu-dossier").innerHTML = champs.map(f =>
+        "<div class='dossier-section'>"
+        + "<div class='dossier-label'>" + f.label + "</div>"
+        + "<div class='dossier-value'>" + f.val + "</div>"
+        + "</div><hr class='dossier-divider'>"
+      ).join("");
 
-      document.getElementById("modal-dossier").classList.add("open");
+      modalDossier.classList.add("open");
     };
 
-    document.getElementById("modal-dossier").addEventListener("click", e => {
-      if (e.target === document.getElementById("modal-dossier"))
-        document.getElementById("modal-dossier").classList.remove("open");
-    });
-
     requireAdmin(async (user, role) => {
-      document.getElementById("sidebar-nom").textContent  = sessionStorage.getItem("cielf_admin_nom") || user.email;
-      document.getElementById("sidebar-role").textContent = role === "admin" ? "Administratrice" : "Éditrice";
+      majSidebarUser(sessionStorage.getItem("cielf_admin_nom") || user.email, role);
       await charger();
     });
   </script>
