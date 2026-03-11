@@ -6,11 +6,11 @@
   <title>CIELF Admin — Candidatures</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root { --teal:#13686b; --wine:#861b3f; --purple:#ccadb5; --cream:#fafaf2; --cyan:#82adad; --dark:#2c2c2c; --mid:#666; --sidebar-w:240px; }
+    :root { --teal:#13686b; --wine:#861b3f; --purple:#ccadb5; --cream:#fafaf2; --cyan:#82adad; --dark:#2c2c2c; --mid:#666; --sidebar-w:240px; --panel-w:480px; }
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; }
 
-    /* ── SIDEBAR (styles partagés) ── */
+    /* ── SIDEBAR (styles partagés — ne pas modifier) ── */
     .sidebar { position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh; background:var(--teal); display:flex; flex-direction:column; z-index:100; overflow-y:auto; }
     .sidebar-logo { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
     .sidebar-logo img { height:40px; }
@@ -31,54 +31,90 @@
     .btn-deconnexion:hover { background:rgba(255,255,255,0.2); color:#fff; }
 
     /* ── LAYOUT ── */
-    .main { margin-left:var(--sidebar-w); min-height:100vh; padding:32px; }
-    .main-header { margin-bottom:28px; }
+    .main { margin-left:var(--sidebar-w); min-height:100vh; padding:32px; transition:margin-right 0.3s; }
+    .main.panel-open { margin-right:var(--panel-w); }
+    .main-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
     .main-header h1 { font-size:22px; font-weight:800; color:var(--teal); }
-    .main-header p { font-size:14px; color:var(--mid); margin-top:4px; }
 
-    /* ── CANDIDATURES ── */
-    .cand-list { display:flex; flex-direction:column; gap:12px; }
-    .cand-card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:20px 24px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; }
-    .cand-nom { font-size:16px; font-weight:800; color:var(--dark); margin-bottom:4px; }
-    .cand-meta { font-size:13px; color:var(--mid); margin-bottom:10px; }
-    .cand-infos { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--mid); }
-    .badge-statut { display:inline-block; font-size:10px; font-weight:800; padding:3px 10px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; }
-    .statut-attente  { background:#fff8e1; color:#c47a1e; }
-    .statut-visio    { background:#e3f2fd; color:#1565c0; }
-    .statut-accepte  { background:#e8f5e9; color:#2e7d32; }
-    .statut-refuse   { background:#fce4ec; color:#880e4f; }
-    .statut-select { padding:8px 12px; border:1.5px solid #ddd; border-radius:8px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; background:#fff; color:var(--dark); }
-    .statut-select:focus { outline:none; border-color:var(--teal); }
-    .btn-voir { margin-top:8px; width:100%; padding:8px; background:var(--cream); color:var(--teal); border:1.5px solid var(--teal); border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; }
-    .btn-voir:hover { background:var(--teal); color:#fff; }
+    /* ── BADGES STATUT ── */
+    .badge-statut { display:inline-block; font-size:10px; font-weight:800; padding:3px 10px; border-radius:10px; text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; }
+    .s-candidature_recue  { background:#e0f2f1; color:#00695c; }
+    .s-visio_planifiee    { background:#e3f2fd; color:#1565c0; }
+    .s-visio_faite        { background:#ede7f6; color:#4527a0; }
+    .s-accepte            { background:#e8f5e9; color:#2e7d32; }
+    .s-en_attente         { background:#fff8e1; color:#c47a1e; }
+    .s-refuse             { background:#fce4ec; color:#880e4f; }
 
-    /* ── MODAL DOSSIER ── */
-    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:500; align-items:flex-start; justify-content:center; padding:24px; overflow-y:auto; }
-    .modal-overlay.open { display:flex; }
-    .modal-box { background:#fff; border-radius:16px; width:100%; max-width:680px; padding:36px 32px; margin:auto; box-shadow:0 8px 40px rgba(0,0,0,0.18); }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
-    .modal-header h2 { font-size:18px; font-weight:800; color:var(--teal); }
-    .btn-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--mid); }
-    .btn-close:hover { color:var(--wine); }
-    .dossier-section { margin-bottom:16px; }
-    .dossier-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--mid); margin-bottom:6px; }
-    .dossier-value { font-size:14px; color:var(--dark); line-height:1.6; }
-    .dossier-divider { border:none; border-top:1px solid #eee; margin:16px 0; }
+    /* ── LISTE CANDIDATURES ── */
+    .cand-list { display:flex; flex-direction:column; gap:10px; }
+    .cand-card { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:18px 20px; display:flex; align-items:center; gap:16px; cursor:pointer; border:2px solid transparent; transition:border-color 0.15s, box-shadow 0.15s; }
+    .cand-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+    .cand-card.active { border-color:var(--teal); }
+    .cand-card-body { flex:1; min-width:0; }
+    .cand-nom { font-size:15px; font-weight:800; color:var(--dark); margin-bottom:3px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .cand-meta { font-size:12px; color:var(--mid); }
+    .cand-date { font-size:11px; color:var(--mid); white-space:nowrap; }
 
-    /* ── ÉTATS VIDES ── */
+    /* ── PANNEAU LATÉRAL ── */
+    .side-panel { position:fixed; top:0; right:0; width:var(--panel-w); height:100vh; background:#fff; box-shadow:-4px 0 24px rgba(0,0,0,0.1); z-index:200; transform:translateX(100%); transition:transform 0.3s ease; display:flex; flex-direction:column; overflow:hidden; }
+    .side-panel.open { transform:translateX(0); }
+
+    .panel-header { padding:20px 24px; border-bottom:1px solid #eee; display:flex; align-items:center; gap:12px; flex-shrink:0; }
+    .panel-header-nom { flex:1; font-size:16px; font-weight:800; color:var(--teal); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .btn-panel-close { background:none; border:none; font-size:20px; color:var(--mid); cursor:pointer; line-height:1; padding:4px; flex-shrink:0; }
+    .btn-panel-close:hover { color:var(--wine); }
+
+    .panel-body { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:24px; }
+
+    /* ── BLOC WORKFLOW ── */
+    .workflow-bloc { background:var(--cream); border-radius:10px; padding:18px 20px; display:flex; flex-direction:column; gap:14px; }
+    .workflow-titre { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--teal); margin-bottom:2px; }
+
+    .workflow-row { display:flex; flex-direction:column; gap:5px; }
+    .workflow-label { font-size:11px; font-weight:700; color:var(--mid); text-transform:uppercase; letter-spacing:0.5px; }
+    .workflow-select { padding:8px 10px; border:1.5px solid #ddd; border-radius:7px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:600; color:var(--dark); background:#fff; cursor:pointer; outline:none; }
+    .workflow-select:focus { border-color:var(--teal); }
+
+    .workflow-checks { display:flex; flex-direction:column; gap:10px; }
+    .check-row { display:flex; align-items:center; gap:10px; cursor:pointer; }
+    .check-row input[type="checkbox"] { width:17px; height:17px; accent-color:var(--teal); cursor:pointer; flex-shrink:0; }
+    .check-row span { font-size:13px; font-weight:600; color:var(--dark); }
+
+    .notes-row { display:flex; flex-direction:column; gap:8px; }
+    .workflow-textarea { padding:9px 12px; border:1.5px solid #ddd; border-radius:7px; font-family:'Nunito',sans-serif; font-size:13px; color:var(--dark); resize:vertical; min-height:90px; outline:none; }
+    .workflow-textarea:focus { border-color:var(--teal); }
+    .btn-save-notes { align-self:flex-end; padding:8px 18px; background:var(--teal); color:#fff; border:none; border-radius:7px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; cursor:pointer; }
+    .btn-save-notes:hover { background:#0e5053; }
+    .btn-save-notes:disabled { opacity:0.5; cursor:not-allowed; }
+    .save-feedback { font-size:11px; color:#2e7d32; font-weight:700; align-self:flex-end; }
+
+    /* ── BLOC DOSSIER ── */
+    .dossier-bloc { display:flex; flex-direction:column; gap:12px; }
+    .dossier-titre { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--teal); }
+    .dossier-champ { display:flex; flex-direction:column; gap:3px; padding-bottom:12px; border-bottom:1px solid #f0f0f0; }
+    .dossier-champ:last-child { border-bottom:none; padding-bottom:0; }
+    .dossier-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--mid); }
+    .dossier-value { font-size:13px; color:var(--dark); line-height:1.6; }
+    .dossier-value a { color:var(--teal); text-decoration:none; }
+    .dossier-value a:hover { text-decoration:underline; }
+
+    /* ── ÉTATS ── */
     .empty-state { text-align:center; padding:60px 20px; color:var(--mid); }
     .empty-icon { font-size:48px; margin-bottom:12px; }
 
     /* ── MOBILE ── */
     .menu-toggle { display:none; position:fixed; top:16px; left:16px; z-index:200; background:var(--teal); color:#fff; border:none; border-radius:8px; width:40px; height:40px; font-size:20px; cursor:pointer; align-items:center; justify-content:center; }
     .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:99; }
+    @media (max-width:900px) {
+      .side-panel { width:100%; }
+      .main.panel-open { margin-right:0; }
+    }
     @media (max-width:768px) {
       .menu-toggle { display:flex; }
       .sidebar { transform:translateX(-100%); transition:transform 0.25s; }
       .sidebar.open { transform:translateX(0); }
       .sidebar-overlay.open { display:block; }
       .main { margin-left:0; padding:72px 16px 24px; }
-      .cand-card { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -87,130 +123,282 @@
   <button class="menu-toggle" id="menu-toggle">☰</button>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <!-- Sidebar chargée dynamiquement depuis sidebar.html -->
+  <!-- Sidebar chargée dynamiquement -->
   <div id="sidebar-container"></div>
 
-  <main class="main">
+  <main class="main" id="main-content">
     <div class="main-header">
-      <h1>📋 Candidatures</h1>
-      <p>Dossiers soumis via cielf.com/candidature (collection pending_members)</p>
+      <h1>📋 Candidatures <span id="count-cand" style="font-size:16px;color:var(--mid);font-weight:600;"></span></h1>
     </div>
     <div class="cand-list" id="cand-list">
       <div class="empty-state"><div class="empty-icon">⏳</div><p>Chargement...</p></div>
     </div>
   </main>
 
-  <!-- Modal dossier complet -->
-  <div class="modal-overlay" id="modal-dossier">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2 id="modal-nom-cand">Dossier candidature</h2>
-        <button class="btn-close" id="btn-close-dossier">✕</button>
-      </div>
-      <div id="modal-contenu-dossier"></div>
+  <!-- Panneau latéral -->
+  <div class="side-panel" id="side-panel">
+    <div class="panel-header">
+      <div class="panel-header-nom" id="panel-nom">—</div>
+      <button class="btn-panel-close" id="btn-panel-close">✕</button>
+    </div>
+    <div class="panel-body" id="panel-body">
+      <!-- contenu injecté dynamiquement -->
     </div>
   </div>
 
   <script type="module">
     import { requireAdmin, db }               from "./cielf-admin-auth.js";
     import { chargerSidebar, majSidebarUser } from "./cielf-sidebar.js";
-    import { collection, getDocs, doc, updateDoc }
+    import { collection, getDocs, doc, updateDoc, orderBy, query }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     await chargerSidebar();
 
-    const candList    = document.getElementById("cand-list");
-    const modalDossier = document.getElementById("modal-dossier");
+    // ── État ─────────────────────────────────────────────────
+    let toutes       = [];
+    let candActive   = null; // ID du candidat affiché dans le panneau
 
-    document.getElementById("btn-close-dossier").addEventListener("click", () => modalDossier.classList.remove("open"));
-    modalDossier.addEventListener("click", e => { if (e.target === modalDossier) modalDossier.classList.remove("open"); });
+    const mainEl   = document.getElementById("main-content");
+    const panel    = document.getElementById("side-panel");
+    const panelNom = document.getElementById("panel-nom");
+    const panelBody= document.getElementById("panel-body");
 
-    let toutes = [];
+    // ── Labels statuts ────────────────────────────────────────
+    const STATUTS = [
+      { val:"candidature_recue", label:"Candidature reçue" },
+      { val:"visio_planifiee",   label:"Visio planifiée"   },
+      { val:"visio_faite",       label:"Visio faite"       },
+      { val:"accepte",           label:"Accepté(e)"        },
+      { val:"en_attente",        label:"En attente"        },
+      { val:"refuse",            label:"Refusé(e)"         }
+    ];
 
+    function labelStatut(val) {
+      const s = STATUTS.find(x => x.val === val);
+      return s ? s.label : (val || "—");
+    }
+
+    // ── Chargement depuis collection candidates ───────────────
     async function charger() {
+      const listEl = document.getElementById("cand-list");
       try {
-        const snap = await getDocs(collection(db, "pending_members"));
+        const snap = await getDocs(query(collection(db, "candidates"), orderBy("createdAt", "desc")));
         toutes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById("count-cand").textContent = "(" + toutes.length + ")";
 
         if (toutes.length === 0) {
-          candList.innerHTML = "<div class='empty-state'><div class='empty-icon'>✅</div><p>Aucune candidature en attente.</p></div>";
+          listEl.innerHTML = "<div class='empty-state'><div class='empty-icon'>✅</div><p>Aucune candidature.</p></div>";
           return;
         }
 
-        const classeStatut = { "En attente":"statut-attente", "Visio planifiée":"statut-visio", "Accepté":"statut-accepte", "Refusé":"statut-refuse" };
-
-        candList.innerHTML = toutes.map(c => {
-          const sc = classeStatut[c.statut] || "statut-attente";
-          const dateStr = c.createdAt?.toDate ? c.createdAt.toDate().toLocaleDateString("fr-BE") : "";
-          const options = ["En attente","Visio planifiée","Accepté","Refusé"]
-            .map(s => "<option value='" + s + "'" + (c.statut === s ? " selected" : "") + ">" + s + "</option>")
-            .join("");
-
-          return "<div class='cand-card'>"
-            + "<div>"
-            +   "<div class='cand-nom'>" + (c.prenom || "") + " " + (c.nom || "")
-            +     " <span class='badge-statut " + sc + "'>" + (c.statut || "En attente") + "</span></div>"
-            +   "<div class='cand-meta'>" + (c.nomEntreprise || "") + (c.pays ? " · " + c.pays : "") + "</div>"
-            +   "<div class='cand-infos'>"
-            +     "<span>📧 " + (c.email || "") + "</span>"
-            +     (c.secteur ? "<span>💼 " + c.secteur + "</span>" : "")
-            +     (dateStr   ? "<span>📅 " + dateStr   + "</span>" : "")
+        listEl.innerHTML = toutes.map(c => {
+          const statut  = c.status || "candidature_recue";
+          const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleDateString("fr-BE") : "";
+          return "<div class='cand-card' id='card-" + c.id + "' data-id='" + c.id + "'>"
+            + "<div class='cand-card-body'>"
+            +   "<div class='cand-nom'>"
+            +     (c.prenom || "") + " " + (c.nom || "")
+            +     " <span class='badge-statut s-" + statut + "'>" + labelStatut(statut) + "</span>"
             +   "</div>"
-            +   "<button class='btn-voir' onclick='window._voirDossier(\"" + c.id + "\")'>Voir le dossier complet</button>"
+            +   "<div class='cand-meta'>" + (c.nomEntreprise || "") + (c.pays ? " · " + c.pays : "") + (c.secteur ? " · " + c.secteur : "") + "</div>"
             + "</div>"
-            + "<div>"
-            +   "<select class='statut-select' onchange='window._changerStatut(\"" + c.id + "\", this.value)'>" + options + "</select>"
-            + "</div>"
+            + "<div class='cand-date'>" + dateStr + "</div>"
             + "</div>";
         }).join("");
 
+        // Clic sur une carte → ouvre le panneau
+        document.querySelectorAll(".cand-card").forEach(card => {
+          card.addEventListener("click", () => {
+            const id = card.getAttribute("data-id");
+            const c  = toutes.find(x => x.id === id);
+            if (c) ouvrirPanel(c);
+          });
+        });
+
       } catch (err) {
-        candList.innerHTML = "<div class='empty-state'><div class='empty-icon'>⚠️</div><p>Erreur : " + err.message + "</p></div>";
+        listEl.innerHTML = "<div class='empty-state'><div class='empty-icon'>⚠️</div><p>Erreur : " + err.message + "</p></div>";
       }
     }
 
-    window._changerStatut = async (id, statut) => {
-      try {
-        await updateDoc(doc(db, "pending_members", id), { statut });
-      } catch (e) {
-        alert("Erreur mise à jour statut : " + e.message);
-      }
-    };
+    // ── Panneau latéral ───────────────────────────────────────
+    function ouvrirPanel(c) {
+      candActive = c.id;
 
-    window._voirDossier = id => {
-      const c = toutes.find(x => x.id === id);
-      if (!c) return;
+      // Marquer la carte active
+      document.querySelectorAll(".cand-card").forEach(el => el.classList.remove("active"));
+      const card = document.getElementById("card-" + c.id);
+      if (card) card.classList.add("active");
 
-      document.getElementById("modal-nom-cand").textContent = (c.prenom || "") + " " + (c.nom || "");
+      panelNom.textContent = (c.prenom || "") + " " + (c.nom || "");
+      panel.classList.add("open");
+      mainEl.classList.add("panel-open");
 
-      const champs = [
-        { label:"Email",                  val: c.email },
+      // ── Bloc workflow ─────────────────────────────────────
+      const statut       = c.status        || "candidature_recue";
+      const visioAssignee= c.visioAssignee || "";
+      const visioFaite   = c.visioFaite    || false;
+      const paiementRecu = c.paiementRecu  || false;
+      const factureEnv   = c.factureEnvoyee|| false;
+      const notes        = c.notes         || "";
+
+      const optionsStatut = STATUTS.map(s =>
+        "<option value='" + s.val + "'" + (statut === s.val ? " selected" : "") + ">" + s.label + "</option>"
+      ).join("");
+
+      const optionsVisio = [
+        { val:"", label:"— Non assignée —" },
+        { val:"juliette",  label:"Juliette" },
+        { val:"genevieve", label:"Geneviève" }
+      ].map(s =>
+        "<option value='" + s.val + "'" + (visioAssignee === s.val ? " selected" : "") + ">" + s.label + "</option>"
+      ).join("");
+
+      // ── Bloc dossier ──────────────────────────────────────
+      const champsLecture = [
+        { label:"Email",                  val: c.email ? "<a href='mailto:" + c.email + "'>" + c.email + "</a>" : null },
         { label:"Téléphone",              val: c.telephone },
-        { label:"Pays / Ville",           val: [c.pays, c.ville].filter(Boolean).join(" — ") },
+        { label:"Pays / Ville",           val: [c.pays, c.ville].filter(Boolean).join(" — ") || null },
         { label:"Entreprise",             val: c.nomEntreprise },
         { label:"Secteur",                val: c.secteur },
         { label:"Ancienneté",             val: c.anciennete },
-        { label:"Site web",               val: c.siteWeb },
-        { label:"LinkedIn",               val: c.linkedin },
+        { label:"Site web",               val: c.siteWeb ? "<a href='" + c.siteWeb + "' target='_blank'>" + c.siteWeb + "</a>" : null },
+        { label:"LinkedIn",               val: c.linkedin ? "<a href='" + c.linkedin + "' target='_blank'>Voir le profil</a>" : null },
         { label:"Description business",   val: c.descriptionBusiness },
         { label:"Vision internationale",  val: c.visionInternationale },
         { label:"Pays visés",             val: c.paysVises },
         { label:"Pourquoi CIELF",         val: c.pourquoiCIELF },
-        { label:"Apport à la communauté", val: c.apport },
+        { label:"Apport communauté",      val: c.apport },
         { label:"Valeur CIELF",           val: c.valeur },
-        { label:"Source",                 val: c.source },
+        { label:"Source",                 val: c.source }
       ].filter(f => f.val);
 
-      document.getElementById("modal-contenu-dossier").innerHTML = champs.map(f =>
-        "<div class='dossier-section'>"
-        + "<div class='dossier-label'>" + f.label + "</div>"
-        + "<div class='dossier-value'>" + f.val + "</div>"
-        + "</div><hr class='dossier-divider'>"
-      ).join("");
+      panelBody.innerHTML =
 
-      modalDossier.classList.add("open");
-    };
+        // Workflow
+        "<div class='workflow-bloc'>"
+        + "<div class='workflow-titre'>Workflow</div>"
 
+        + "<div class='workflow-row'>"
+        +   "<div class='workflow-label'>Statut</div>"
+        +   "<select class='workflow-select' id='wp-status'>" + optionsStatut + "</select>"
+        + "</div>"
+
+        + "<div class='workflow-row'>"
+        +   "<div class='workflow-label'>Visio assignée à</div>"
+        +   "<select class='workflow-select' id='wp-visioAssignee'>" + optionsVisio + "</select>"
+        + "</div>"
+
+        + "<div class='workflow-checks'>"
+        +   "<label class='check-row'>"
+        +     "<input type='checkbox' id='wp-visioFaite'" + (visioFaite ? " checked" : "") + ">"
+        +     "<span>Visio réalisée</span>"
+        +   "</label>"
+        +   "<label class='check-row'>"
+        +     "<input type='checkbox' id='wp-paiementRecu'" + (paiementRecu ? " checked" : "") + ">"
+        +     "<span>Paiement reçu</span>"
+        +   "</label>"
+        +   "<label class='check-row'>"
+        +     "<input type='checkbox' id='wp-factureEnvoyee'" + (factureEnv ? " checked" : "") + ">"
+        +     "<span>Facture envoyée</span>"
+        +   "</label>"
+        + "</div>"
+
+        + "<div class='notes-row'>"
+        +   "<div class='workflow-label'>Notes internes</div>"
+        +   "<textarea class='workflow-textarea' id='wp-notes' placeholder='Notes, remarques, suivi...'>" + notes + "</textarea>"
+        +   "<div style='display:flex;align-items:center;gap:12px;justify-content:flex-end;'>"
+        +     "<span class='save-feedback' id='notes-feedback' style='display:none;'>✓ Enregistré</span>"
+        +     "<button class='btn-save-notes' id='btn-save-notes'>Enregistrer</button>"
+        +   "</div>"
+        + "</div>"
+
+        + "</div>"
+
+        // Dossier
+        + "<div class='dossier-bloc'>"
+        + "<div class='dossier-titre'>Dossier complet</div>"
+        + champsLecture.map(f =>
+            "<div class='dossier-champ'>"
+            + "<div class='dossier-label'>" + f.label + "</div>"
+            + "<div class='dossier-value'>" + f.val + "</div>"
+            + "</div>"
+          ).join("")
+        + "</div>";
+
+      // ── Listeners sauvegarde auto ─────────────────────────
+
+      // status
+      document.getElementById("wp-status").addEventListener("change", async function() {
+        await sauvegarder(c.id, { status: this.value });
+        // Met à jour le badge dans la liste sans recharger
+        const card = document.getElementById("card-" + c.id);
+        if (card) {
+          const badge = card.querySelector(".badge-statut");
+          if (badge) {
+            badge.className = "badge-statut s-" + this.value;
+            badge.textContent = labelStatut(this.value);
+          }
+        }
+        // Met à jour l'objet local
+        const idx = toutes.findIndex(x => x.id === c.id);
+        if (idx > -1) toutes[idx].status = this.value;
+      });
+
+      // visioAssignee
+      document.getElementById("wp-visioAssignee").addEventListener("change", async function() {
+        await sauvegarder(c.id, { visioAssignee: this.value });
+        const idx = toutes.findIndex(x => x.id === c.id);
+        if (idx > -1) toutes[idx].visioAssignee = this.value;
+      });
+
+      // checkboxes
+      ["visioFaite", "paiementRecu", "factureEnvoyee"].forEach(champ => {
+        document.getElementById("wp-" + champ).addEventListener("change", async function() {
+          const update = {};
+          update[champ] = this.checked;
+          await sauvegarder(c.id, update);
+          const idx = toutes.findIndex(x => x.id === c.id);
+          if (idx > -1) toutes[idx][champ] = this.checked;
+        });
+      });
+
+      // notes — bouton explicite
+      document.getElementById("btn-save-notes").addEventListener("click", async () => {
+        const val = document.getElementById("wp-notes").value.trim();
+        const btn = document.getElementById("btn-save-notes");
+        const fb  = document.getElementById("notes-feedback");
+        btn.disabled = true;
+        btn.textContent = "...";
+        await sauvegarder(c.id, { notes: val });
+        const idx = toutes.findIndex(x => x.id === c.id);
+        if (idx > -1) toutes[idx].notes = val;
+        btn.textContent = "Enregistrer";
+        btn.disabled = false;
+        fb.style.display = "inline";
+        setTimeout(() => { fb.style.display = "none"; }, 2500);
+      });
+    }
+
+    // ── Fermer le panneau ─────────────────────────────────────
+    function fermerPanel() {
+      panel.classList.remove("open");
+      mainEl.classList.remove("panel-open");
+      document.querySelectorAll(".cand-card").forEach(el => el.classList.remove("active"));
+      candActive = null;
+    }
+
+    document.getElementById("btn-panel-close").addEventListener("click", fermerPanel);
+
+    // ── updateDoc Firestore ────────────────────────────────────
+    async function sauvegarder(id, data) {
+      try {
+        await updateDoc(doc(db, "candidates", id), data);
+      } catch (e) {
+        alert("Erreur lors de la sauvegarde : " + e.message);
+      }
+    }
+
+    // ── Init ──────────────────────────────────────────────────
     requireAdmin(async (user, role) => {
       majSidebarUser(sessionStorage.getItem("cielf_admin_nom") || user.email, role);
       await charger();
