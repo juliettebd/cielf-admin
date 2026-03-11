@@ -114,6 +114,10 @@
         <div class="action-icon">👥</div>
         <div><div class="action-title">Gérer les membres</div><div class="action-desc">Statuts, memberships, accès</div></div>
       </a>
+      <a class="action-card" href="candidatures.html">
+        <div class="action-icon">📋</div>
+        <div><div class="action-title">Candidatures</div><div class="action-desc">Dossiers reçus, workflow, suivi</div></div>
+      </a>
       <a class="action-card" href="https://www.cielf.com/evenements" target="_blank">
         <div class="action-icon">🌐</div>
         <div><div class="action-title">Voir la page publique</div><div class="action-desc">Ouvrir cielf.com/evenements</div></div>
@@ -142,7 +146,7 @@
         document.getElementById("stat-fondateurs").textContent = membresActifs.filter(d => d.data().isFondateur).length;
 
         // Candidatures : collection entière, pas de filtre complexe
-        const candSnap = await getDocs(collection(db, "pending_members"));
+        const candSnap = await getDocs(collection(db, "candidates"));
         document.getElementById("stat-candidatures").textContent = candSnap.size;
 
         // Événements à venir : query simple sur statut, filtre date côté client
