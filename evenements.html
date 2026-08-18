@@ -638,19 +638,31 @@
     window._dupliquerEvent = async id => {
       const original = tousLesEvents.find(e => e.id === id);
       if (!original) return;
-      const { id: _id, date, dateFin, slug, createdAt, updatedAt, ...reste } = original;
-      const copie = {
-        ...reste,
-        titre: (original.titre || "Événement CIELF") + " (copie)",
-        statut: "brouillon",
-        date: null,
-        dateFin: null,
-        slug: null,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
-      };
-      await addDoc(collection(db, "events"), copie);
-      await chargerEvenements();
+      try {
+        const { id: _id, date, dateFin, slug, createdAt, updatedAt, ...reste } = original;
+        const copie = {
+          ...reste,
+          titre: (original.titre || "Événement CIELF") + " (copie)",
+          statut: "brouillon",
+          date: null,
+          dateFin: null,
+          slug: null,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        };
+        await addDoc(collection(db, "events"), copie);
+
+        // Bascule sur l'onglet Brouillons pour que la copie soit visible immédiatement
+        document.querySelectorAll(".filtre-btn").forEach(b => b.classList.remove("active"));
+        const btnBrouillon = document.querySelector('.filtre-btn[data-filtre="brouillon"]');
+        if (btnBrouillon) btnBrouillon.classList.add("active");
+        filtreCourant = "brouillon";
+
+        await chargerEvenements();
+      } catch (err) {
+        console.error("Erreur duplication:", err);
+        alert("La duplication a échoué : " + err.message);
+      }
     };
 
     document.querySelectorAll(".filtre-btn").forEach(btn => {
